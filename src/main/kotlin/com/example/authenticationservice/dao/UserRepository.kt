@@ -13,4 +13,5 @@ interface UserRepository : JpaRepository<User, Long> {
     fun getUserByEmail(email : String) : User?
     fun getUserByEmailAndType(email : String, type : TypeUserDto) : User?
     fun getById(id : Long) : User?
+    fun getByPasswordResetToken(passwordResetToken: String) : User?
 }

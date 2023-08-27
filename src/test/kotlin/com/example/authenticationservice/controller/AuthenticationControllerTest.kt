@@ -70,10 +70,9 @@ class AuthenticationControllerTest {
     @Test
     fun testResetPassword_ValidRequest_ReturnsOk() {
         // Arrange
-        val setPasswordRequest = SetPasswordRequest("john.doe@example.com", "password", "token")
+        val setPasswordRequest = SetPasswordRequest("password", "token")
         every {
             authenticationService.resetPassword(
-                setPasswordRequest.email,
                 setPasswordRequest.password,
                 setPasswordRequest.token
             )
@@ -86,7 +85,6 @@ class AuthenticationControllerTest {
         assertEquals(HttpStatus.OK, response.statusCode)
         verify(exactly = 1) {
             authenticationService.resetPassword(
-                setPasswordRequest.email,
                 setPasswordRequest.password,
                 setPasswordRequest.token
             )

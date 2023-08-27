@@ -77,7 +77,7 @@ class AuthenticationController(
 
     @PutMapping("/password_reset")
     fun resetPassword(@Valid @RequestBody setPasswordRequest: SetPasswordRequest): ResponseEntity<Void> {
-        authenticationService.resetPassword(setPasswordRequest.email, setPasswordRequest.password, setPasswordRequest.token);
+        authenticationService.resetPassword(setPasswordRequest.password, setPasswordRequest.token);
 
         return ResponseEntity.status(200).build()
     }

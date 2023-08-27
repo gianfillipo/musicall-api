@@ -49,8 +49,8 @@ class AuthenticationService(
         return user.passwordResetToken
     }
 
-    fun resetPassword(email: String, password: String, token: String) {
-        val user = userRepository.getUserByEmail(email) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "User doesn't exist")
+    fun resetPassword(password: String, token: String) {
+        val user = userRepository.getByPasswordResetToken(token) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Reset token doesn't exist'")
         if (!user.isConfirmed) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "User isn't confirmed")
         if (!user.isPasswordResetRequested) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Password change hasn't been requested")
         if (user.passwordResetToken != token) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect password change token")

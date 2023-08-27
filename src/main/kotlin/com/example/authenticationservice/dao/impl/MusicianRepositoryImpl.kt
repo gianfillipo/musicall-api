@@ -47,7 +47,6 @@ class MusicianRepositoryImpl (
             predicates.add(joinMusicianInstrument.get<Long>("instrument").`in`(filterMusicianRequest.instrumentsId))
         }
 
-
         predicates.add(cb.equal(joinMusicianInstrument.get<Instrument>("instrument").get<Long>("id"), instrumentId))
 
         cq.where(*predicates.toTypedArray())

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 data class SetPasswordRequest(
-        @JsonProperty("email") @field:NotNull @field:Email @field:NotBlank val email: String,
-        @JsonProperty("password") @field:NotNull @field:NotBlank @field:Size(min = 8, max = 15) var password: String,
-        @JsonProperty("token") @field:NotNull @field:NotBlank @field:Size(min = 36, max = 36) var token: String
+        @JsonProperty("password") @field:NotNull @field:NotBlank @field:Size(min = 8, max = 30) var password: String,
+        @JsonProperty("token") @field:NotNull @field:NotBlank var token: String
 )

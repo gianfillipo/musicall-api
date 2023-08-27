@@ -11,7 +11,7 @@ import javax.validation.constraints.Size
 data class AuthenticationRequest(
         @JsonProperty("email")  @field:Email @field:NotBlank @field:NotNull
         val email: String?,
-        @JsonProperty("password") @field:NotNull @field:NotBlank @field:Size(min = 8, max = 15)
+        @JsonProperty("password") @field:NotNull @field:NotBlank @field:Size(min = 8, max = 30)
         var password: String?,
         @JsonProperty("type") @field:NotNull
         val type : TypeUserDto?
