@@ -16,5 +16,5 @@ data class UpdateEventRequest(
         @JsonProperty("eventDate") @field:DateTimeFormat(pattern = "yyyy/MM/dd") @field:Future(message = "A data do evento deve estar no futuro") val eventDate: LocalDate?,
         @JsonProperty("startHour") @field:NotNull(message = "A hora de início não pode ser nula") @field:DateTimeFormat(pattern = "HH:mm") val startHour: Time?,
         @JsonProperty("durationHours") @field:Positive(message = "A duração do evento deve ser um valor positivo") val durationHours: Int?,
-        @JsonProperty("imageUrl") @field:NotNull(message = "A URL da imagem não pode ser nula") @field:Positive(message = "A URL da imagem deve ser válida") val imageUrl: String?
+        @JsonProperty("imageUrl") @field:NotNull(message = "A URL da imagem não pode ser nula") val imageUrl: String?
 )
