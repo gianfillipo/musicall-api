@@ -1,5 +1,6 @@
 package com.example.authenticationservice.dao
 
+import com.example.authenticationservice.dto.CalendarEventDto
 import com.example.authenticationservice.dto.EventWithJobsDto
 import com.example.authenticationservice.model.Event
 import com.example.authenticationservice.model.User
@@ -18,5 +19,12 @@ interface EventRepository : EventRepositoryCustom, JpaRepository<Event, Long> {
 
     @Query("SELECT e.id FROM Event e WHERE e.id = :id AND e.user.id = :userId AND e.finalized = false")
     fun findIdByIdAndUserIdAndFinalizedFalse(id: Long, userId: Long): Long?
-  abstract fun findByIdAndUserIdAndFinalizedFalse(eventId: Long, id: Long): Nothing?
+
+    @Query("""
+        select new com.example.authenticationservice.dto.CalendarEventDto(e)
+            from Event e
+                  where e.user.id = :userId
+                  order by e.eventDate asc
+    """)
+    fun findCalendarEventsByOganizer(userId: Long): List<CalendarEventDto>
 }
