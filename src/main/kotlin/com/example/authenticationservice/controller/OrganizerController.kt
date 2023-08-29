@@ -39,6 +39,13 @@ class OrganizerController (
         return ResponseEntity.status(201).body(createEventDto)
     }
 
+    @GetMapping("/event")
+    fun findEventsByOrganizer(req : HttpServletRequest) : List<CalendarEventDto> {
+        val createEventDto = organizerService.findEventsByOrganizer(req)
+
+        return createEventDto
+    }
+
     @PostMapping("/event/job")
     fun createEventJob(req : HttpServletRequest, @Valid @RequestBody createEventJobRequest: CreateEventJobRequest) : ResponseEntity<List<EventJobDto>> {
         val eventJobsDto : List<EventJobDto> = organizerService.createEventJob(createEventJobRequest, req)
