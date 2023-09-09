@@ -1,5 +1,6 @@
 package com.example.authenticationservice.controller
 
+import com.example.authenticationservice.dto.InstrumentDto
 import com.example.authenticationservice.dto.JobRequestDto
 import com.example.authenticationservice.dto.TypeUserDto
 import com.example.authenticationservice.exceptions.InvalidJwtAuthenticationException
@@ -80,6 +81,13 @@ class UserController (
         userService.approveJobRequest(req, id)
 
         return ResponseEntity.status(200).build()
+    }
+
+    @GetMapping("/instruments")
+    fun getInstruments(req: HttpServletRequest): ResponseEntity<List<InstrumentDto>>{
+        val result = userService.getInstruments(req)
+
+        return ResponseEntity.status(200).body(result)
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

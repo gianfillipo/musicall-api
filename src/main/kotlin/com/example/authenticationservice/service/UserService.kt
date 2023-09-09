@@ -3,12 +3,10 @@ package com.example.authenticationservice.service
 import com.example.authenticationservice.dao.JobRequestRepository
 import com.example.authenticationservice.dao.NotificationRepository
 import com.example.authenticationservice.dao.UserRepository
+import com.example.authenticationservice.dto.InstrumentDto
 import com.example.authenticationservice.dto.JobRequestDto
 import com.example.authenticationservice.dto.NotificationTypeDto
 import com.example.authenticationservice.dto.TypeUserDto
-import com.example.authenticationservice.model.JobRequest
-import com.example.authenticationservice.model.Notification
-import com.example.authenticationservice.model.User
 import com.example.authenticationservice.parameters.DeleteUserRequest
 import com.example.authenticationservice.parameters.EmailResetRequest
 import com.example.authenticationservice.parameters.SetEmailRequest
@@ -97,5 +95,11 @@ class UserService (
         val id = jwtTokenProvider.getId(token).toLong()
         val typeUser = jwtTokenProvider.getType(token)
         return typeUser
+    }
+
+    fun getInstruments(req: HttpServletRequest): List<InstrumentDto> {
+        val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException( HttpStatus.FORBIDDEN, "User invalid role JWT token.")
+
+        return userRepository.findAllInstrument()
     }
 }
