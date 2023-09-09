@@ -24,4 +24,7 @@ interface MusicianRepository : MusicianRepositoryCustom, JpaRepository<Musician,
 
     @Query("SELECT m.id FROM Musician m WHERE m.user.id = :fkUser")
     fun findIdByUserId(fkUser: Long): Long?
+
+    @Query("SELECT COUNT(m.cep) FROM Musician m WHERE m.id = :userId")
+    fun validationMusician(userId: Long): String
 }

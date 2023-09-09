@@ -70,7 +70,14 @@ class MusicianController (
     fun deleteJobRequest(req: HttpServletRequest, @PathVariable("jobRequestId") @Valid @NotNull jobRequestId: Long): ResponseEntity<Void> {
         musicianService.deleteJobRequest(req, jobRequestId)
 
-        return  ResponseEntity.status(200).build()
+        return ResponseEntity.status(200).build()
+    }
+
+    @GetMapping("/validation-register/{userId}")
+    fun validationRegister(req: HttpServletRequest, @PathVariable("userId") @NotNull userId: Long): ResponseEntity<Boolean> {
+        val result = musicianService.validationRegister(req, userId)
+
+        return ResponseEntity.status(200).body(result)
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

@@ -181,4 +181,11 @@ class MusicianService (
 
         return musicians
     }
+
+    fun validationRegister(req: HttpServletRequest ,userId: Long): Boolean {
+        jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
+
+        val result = musicianRepository.validationMusician(userId)
+        return result == "1"
+    }
 }
