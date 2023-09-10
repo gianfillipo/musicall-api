@@ -75,5 +75,5 @@ class AuthenticationService(
         model["token"] = token
         model["id"] = user.id
         return model
-    }
+        }
 }
