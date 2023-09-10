@@ -2,9 +2,9 @@ package com.example.authenticationservice.domain.service
 
 import com.example.authenticationservice.domain.repositories.UserRepository
 import com.example.authenticationservice.application.config.security.JwtTokenProvider
-import com.example.authenticationservice.response.TypeUserDto
 import com.example.authenticationservice.domain.entities.User
-import com.example.authenticationservice.application.web.controller.dto.request.RegisterUserRequest
+import com.example.authenticationservice.application.web.dto.request.RegisterUserRequest
+import com.example.authenticationservice.application.web.dto.response.TypeUserDto
 import org.mindrot.jbcrypt.BCrypt
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -19,7 +19,7 @@ class AuthenticationService(
 ) {
     @Autowired internal var jwtTokenProvider: JwtTokenProvider? = null
 
-    fun registerUser(registerUserRequest: com.example.authenticationservice.application.web.controller.dto.request.RegisterUserRequest) : String {
+    fun registerUser(registerUserRequest: com.example.authenticationservice.application.web.dto.request.RegisterUserRequest) : String {
         if (userRepository.existsByEmailOrCpfOrTelephone(registerUserRequest.email!!, registerUserRequest.cpf!!, registerUserRequest.telephone!!)) throw ResponseStatusException(HttpStatus.CONFLICT, "User already registered", null);
         val token = UUID.randomUUID().toString();
         userRepository.save(User(registerUserRequest, token))

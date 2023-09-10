@@ -1,6 +1,6 @@
 package com.example.authenticationservice.application.web.dto.request
 
-import com.example.authenticationservice.response.TypeUserDto
+import com.example.authenticationservice.application.web.dto.response.TypeUserDto
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate

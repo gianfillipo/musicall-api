@@ -1,8 +1,9 @@
 package com.example.authenticationservice.application.config.security
 
-import com.example.authenticationservice.domain.repositories.UserRepository
-import com.example.authenticationservice.response.TypeUserDto
+import com.example.authenticationservice.application.web.dto.response.TypeUserDto
+import com.example.authenticationservice.domain.entities.User
 import com.example.authenticationservice.domain.exceptions.InvalidJwtAuthenticationException
+import com.example.authenticationservice.domain.repositories.UserRepository
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys.secretKeyFor
 import javax.servlet.http.HttpServletRequest
@@ -15,7 +16,6 @@ import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.util.*
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import com.example.authenticationservice.domain.entities.User
 import org.springframework.security.core.userdetails.User as UserS
 import org.springframework.web.server.ResponseStatusException
 

@@ -4,8 +4,8 @@ import com.example.authenticationservice.domain.repositories.MusicianRepositoryC
 import com.example.authenticationservice.domain.entities.Instrument
 import com.example.authenticationservice.domain.entities.Musician
 import com.example.authenticationservice.domain.entities.MusicianInstrument
-import com.example.authenticationservice.response.MusicianEventJobDto
-import com.example.authenticationservice.application.web.controller.dto.request.FilterMusicianRequest
+import com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest
+import com.example.authenticationservice.application.web.dto.response.MusicianEventJobDto
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -17,7 +17,7 @@ import javax.persistence.EntityManager
 class MusicianRepositoryImpl (
     private val em: EntityManager
 ): MusicianRepositoryCustom {
-    override fun findMusicianByIdAndEventLocation(instrumentId: Long, filterMusicianRequest: com.example.authenticationservice.application.web.controller.dto.request.FilterMusicianRequest, page: Pageable): PageImpl<MusicianEventJobDto> {
+    override fun findMusicianByIdAndEventLocation(instrumentId: Long, filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest, page: Pageable): PageImpl<MusicianEventJobDto> {
         val cb = em.criteriaBuilder
         val cq = cb.createQuery(MusicianEventJobDto::class.java)
         val root = cq.from(Musician::class.java)

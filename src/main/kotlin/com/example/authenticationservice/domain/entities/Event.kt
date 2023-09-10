@@ -1,6 +1,6 @@
 package com.example.authenticationservice.domain.entities
 
-import com.example.authenticationservice.application.web.controller.dto.request.CreateEventRequest
+import com.example.authenticationservice.application.web.dto.request.CreateEventRequest
 import java.sql.Time
 import java.time.LocalDate
 import javax.persistence.*
@@ -50,7 +50,7 @@ data class Event
         var finalized = false
 
         constructor(
-            createEventRequest: com.example.authenticationservice.application.web.controller.dto.request.CreateEventRequest, creator: User
+            createEventRequest: com.example.authenticationservice.application.web.dto.request.CreateEventRequest, creator: User
         ) : this(
                 user = creator,
                 name =  createEventRequest.name!!,

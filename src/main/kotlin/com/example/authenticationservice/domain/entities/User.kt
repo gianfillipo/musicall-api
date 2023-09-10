@@ -1,7 +1,7 @@
 package com.example.authenticationservice.domain.entities
 
-import com.example.authenticationservice.response.TypeUserDto
-import com.example.authenticationservice.application.web.controller.dto.request.RegisterUserRequest
+import com.example.authenticationservice.application.web.dto.request.RegisterUserRequest
+import com.example.authenticationservice.application.web.dto.response.TypeUserDto
 import org.mindrot.jbcrypt.BCrypt
 import java.time.LocalDate
 import java.util.*
@@ -56,7 +56,7 @@ data class User(
 
 
     constructor(
-            registerUserRequest: com.example.authenticationservice.application.web.controller.dto.request.RegisterUserRequest, token: String
+            registerUserRequest: com.example.authenticationservice.application.web.dto.request.RegisterUserRequest, token: String
     ) : this(
             type = registerUserRequest.type!!,
             name = registerUserRequest.name!!,

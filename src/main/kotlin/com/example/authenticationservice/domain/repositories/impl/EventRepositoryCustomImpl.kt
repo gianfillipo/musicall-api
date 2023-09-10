@@ -1,11 +1,11 @@
 package com.example.authenticationservice.domain.repositories.impl
 
 import com.example.authenticationservice.domain.repositories.EventRepositoryCustom
-import com.example.authenticationservice.response.EventSearchDto
 import com.example.authenticationservice.domain.entities.Event
 import com.example.authenticationservice.domain.entities.EventJob
 import com.example.authenticationservice.domain.entities.Musician
-import com.example.authenticationservice.application.web.controller.dto.request.FilterEventsRequest
+import com.example.authenticationservice.application.web.dto.request.FilterEventsRequest
+import com.example.authenticationservice.application.web.dto.response.EventSearchDto
 import org.springframework.stereotype.Repository
 import java.util.Date
 import java.time.LocalDate
@@ -18,7 +18,7 @@ class EventRepositoryCustomImpl (
 ) : EventRepositoryCustom {
 
     override fun findUnfinalizedEventsAfterOrEqual(
-        filterEventsRequest: com.example.authenticationservice.application.web.controller.dto.request.FilterEventsRequest,
+        filterEventsRequest: com.example.authenticationservice.application.web.dto.request.FilterEventsRequest,
         instrumentsId: List<Long>
     ): List<EventSearchDto> {
         val cb = em.criteriaBuilder

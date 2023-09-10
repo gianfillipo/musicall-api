@@ -1,6 +1,6 @@
 package com.example.authenticationservice.domain.repositories
 
-import com.example.authenticationservice.response.InstrumentIdAndEventCepDto
+import com.example.authenticationservice.application.web.dto.response.InstrumentIdAndEventCepDto
 import com.example.authenticationservice.domain.entities.Event
 import com.example.authenticationservice.domain.entities.EventJob
 import org.springframework.data.jpa.repository.JpaRepository
@@ -21,6 +21,6 @@ interface EventJobRepository : EventRepositoryCustom, JpaRepository<EventJob, Lo
     fun existsByEventDateAndMusicianId(eventDate: LocalDate, musicianId: Long): Boolean
     @Modifying
     fun deleteByEventId(eventId: Long)
-    @Query("SELECT new com.example.authenticationservice.dto.InstrumentIdAndEventCepDto(instrument.id, e.event.cep) FROM EventJob e WHERE e.id = :eventJobId AND e.event.user.id = :userId")
+    @Query("SELECT new com.example.authenticationservice.application.web.dto.response.InstrumentIdAndEventCepDto(instrument.id, e.event.cep) FROM EventJob e WHERE e.id = :eventJobId AND e.event.user.id = :userId")
     fun findInstrumentIdAndEventCepByIdAndUserId(eventJobId: Long, userId: Long): InstrumentIdAndEventCepDto?
 }

@@ -1,8 +1,8 @@
 package com.example.authenticationservice.application.web.controller
 
-import com.example.authenticationservice.response.*
+import com.example.authenticationservice.application.web.dto.response.EventJobDto
+import com.example.authenticationservice.application.web.dto.response.MusicianEventJobDto
 import com.example.authenticationservice.domain.exceptions.ParameterException
-import com.example.authenticationservice.request.*
 import com.example.authenticationservice.domain.service.OrganizerService
 import com.sun.istack.NotNull
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -27,34 +27,34 @@ class OrganizerController (
         @Autowired private val organizerService : OrganizerService
 ) {
     @PostMapping("/event")
-    fun createEvent(req : HttpServletRequest, @Valid @RequestBody createEventRequest: com.example.authenticationservice.application.web.controller.dto.request.CreateEventRequest) : ResponseEntity<com.example.authenticationservice.application.web.controller.dto.response.CreateEventDto> {
+    fun createEvent(req : HttpServletRequest, @Valid @RequestBody createEventRequest: com.example.authenticationservice.application.web.dto.request.CreateEventRequest) : ResponseEntity<com.example.authenticationservice.application.web.dto.response.CreateEventDto> {
         val createEventDto = organizerService.createEvent(createEventRequest, req)
 
         return ResponseEntity.status(201).body(createEventDto)
     }
 
     @GetMapping("/event")
-    fun findEventsByOrganizer(req : HttpServletRequest) : List<com.example.authenticationservice.application.web.controller.dto.response.CalendarEventDto> {
+    fun findEventsByOrganizer(req : HttpServletRequest) : List<com.example.authenticationservice.application.web.dto.response.CalendarEventDto> {
         val createEventDto = organizerService.findEventsByOrganizer(req)
 
         return createEventDto
     }
 
     @PostMapping("/event/job")
-    fun createEventJob(req : HttpServletRequest, @Valid @RequestBody createEventJobRequest: com.example.authenticationservice.application.web.controller.dto.request.CreateEventJobRequest) : ResponseEntity<List<EventJobDto>> {
+    fun createEventJob(req : HttpServletRequest, @Valid @RequestBody createEventJobRequest: com.example.authenticationservice.application.web.dto.request.CreateEventJobRequest) : ResponseEntity<List<EventJobDto>> {
         val eventJobsDto : List<EventJobDto> = organizerService.createEventJob(createEventJobRequest, req)
 
         return ResponseEntity.status(201).body(eventJobsDto)
     }
 
     @PutMapping("/event")
-    fun updateEvent(req : HttpServletRequest, @Valid @RequestBody updateEventRequest: com.example.authenticationservice.application.web.controller.dto.request.UpdateEventRequest): ResponseEntity<com.example.authenticationservice.application.web.controller.dto.response.CreateEventDto> {
+    fun updateEvent(req : HttpServletRequest, @Valid @RequestBody updateEventRequest: com.example.authenticationservice.application.web.dto.request.UpdateEventRequest): ResponseEntity<com.example.authenticationservice.application.web.dto.response.CreateEventDto> {
         val eventDto = organizerService.updateEvent(updateEventRequest, req)
 
         return ResponseEntity.status(200).body(eventDto)
     }
     @DeleteMapping("/event")
-    fun deleteEvent(req : HttpServletRequest, @Valid @RequestBody deleteEventRequest: com.example.authenticationservice.application.web.controller.dto.request.DeleteEventRequest): ResponseEntity<Void> {
+    fun deleteEvent(req : HttpServletRequest, @Valid @RequestBody deleteEventRequest: com.example.authenticationservice.application.web.dto.request.DeleteEventRequest): ResponseEntity<Void> {
         organizerService.deleteEvent(req, deleteEventRequest)
 
         return ResponseEntity.status(200).build()
@@ -70,7 +70,7 @@ class OrganizerController (
     @PostMapping("/musician/event-job/{eventJobId}")
     fun findMusicianByEventLocation(
         req: HttpServletRequest,
-        @Valid @RequestBody filterMusicianRequest: com.example.authenticationservice.application.web.controller.dto.request.FilterMusicianRequest,
+        @Valid @RequestBody filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest,
         @PathVariable("eventJobId") @Valid @NotNull eventJobId: Long,
         @RequestParam("page", defaultValue = "0") page: Int,
         @RequestParam("size", defaultValue = "10") size: Int

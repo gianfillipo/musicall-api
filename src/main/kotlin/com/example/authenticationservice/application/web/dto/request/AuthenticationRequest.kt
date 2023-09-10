@@ -1,6 +1,6 @@
 package com.example.authenticationservice.application.web.dto.request
 
-import com.example.authenticationservice.response.TypeUserDto
+import com.example.authenticationservice.application.web.dto.response.TypeUserDto
 import com.fasterxml.jackson.annotation.JsonProperty
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank

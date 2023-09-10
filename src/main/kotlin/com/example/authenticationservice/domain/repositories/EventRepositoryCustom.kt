@@ -1,9 +1,9 @@
 package com.example.authenticationservice.domain.repositories
 
-import com.example.authenticationservice.response.EventSearchDto
-import com.example.authenticationservice.application.web.controller.dto.request.FilterEventsRequest
+import com.example.authenticationservice.application.web.dto.response.EventSearchDto
+
 
 interface
 EventRepositoryCustom {
-    fun findUnfinalizedEventsAfterOrEqual(filterEventsRequest: com.example.authenticationservice.application.web.controller.dto.request.FilterEventsRequest, instrumentsId: List<Long>): List<EventSearchDto>
+    fun findUnfinalizedEventsAfterOrEqual(filterEventsRequest: com.example.authenticationservice.application.web.dto.request.FilterEventsRequest, instrumentsId: List<Long>): List<EventSearchDto>
 }

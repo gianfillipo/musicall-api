@@ -3,8 +3,8 @@ package com.example.authenticationservice.domain.service
 import com.example.authenticationservice.domain.entities.*
 import com.example.authenticationservice.domain.entities.JobRequest
 import com.example.authenticationservice.domain.repositories.*
-import com.example.authenticationservice.response.*
-import com.example.authenticationservice.request.*
+import com.example.authenticationservice.application.web.dto.response.*
+import com.example.authenticationservice.application.web.dto.request.*
 import com.example.authenticationservice.application.config.security.JwtTokenProvider
 import com.example.authenticationservice.application.web.utils.GoogleMapsUtils
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -29,7 +29,7 @@ class OrganizerService (
     @Autowired private val musicianService: MusicianService,
     @Autowired private val googleMapsService: GoogleMapsUtils
 ) {
-    fun createEvent(createEventRequest: com.example.authenticationservice.application.web.controller.dto.request.CreateEventRequest, req : HttpServletRequest) : com.example.authenticationservice.application.web.controller.dto.response.CreateEventDto {
+    fun createEvent(createEventRequest: com.example.authenticationservice.application.web.dto.request.CreateEventRequest, req : HttpServletRequest) : com.example.authenticationservice.application.web.dto.response.CreateEventDto {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
         val id = jwtTokenProvider.getId(token).toLong()
         val user = userRepository.getById(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado")
@@ -39,10 +39,10 @@ class OrganizerService (
 
         eventRepository.save(event)
 
-        return com.example.authenticationservice.application.web.controller.dto.response.CreateEventDto(event)
+        return com.example.authenticationservice.application.web.dto.response.CreateEventDto(event)
     }
 
-    fun createEventJob(createEventJobRequest: com.example.authenticationservice.application.web.controller.dto.request.CreateEventJobRequest, req: HttpServletRequest): List<EventJobDto> {
+    fun createEventJob(createEventJobRequest: com.example.authenticationservice.application.web.dto.request.CreateEventJobRequest, req: HttpServletRequest): List<EventJobDto> {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
         val id = jwtTokenProvider.getId(token).toLong()
         val eventId = eventRepository.findIdByIdAndUserIdAndFinalizedFalse(createEventJobRequest.fkEvent!!, id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Você não pode criar jobs para esse evento")
@@ -64,7 +64,7 @@ class OrganizerService (
     }
 
     @Transactional
-    fun deleteEvent(req: HttpServletRequest, deleteEventRequest: com.example.authenticationservice.application.web.controller.dto.request.DeleteEventRequest) {
+    fun deleteEvent(req: HttpServletRequest, deleteEventRequest: com.example.authenticationservice.application.web.dto.request.DeleteEventRequest) {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário invalido")
         val id = jwtTokenProvider.getId(token).toLong()
 
@@ -76,7 +76,7 @@ class OrganizerService (
         eventRepository.deleteById(deleteEventRequest.id!!)
 }
 
-    fun updateEvent(updateEventRequest: com.example.authenticationservice.application.web.controller.dto.request.UpdateEventRequest, req: HttpServletRequest): com.example.authenticationservice.application.web.controller.dto.response.CreateEventDto {
+    fun updateEvent(updateEventRequest: com.example.authenticationservice.application.web.dto.request.UpdateEventRequest, req: HttpServletRequest): com.example.authenticationservice.application.web.dto.response.CreateEventDto {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "ResponseStatusException(HttpStatus.NOT_FOUND, \"Usuário não encontrado\")")
         val id = jwtTokenProvider.getId(token).toLong()
         val user = userRepository.getById(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado")
@@ -133,7 +133,7 @@ class OrganizerService (
 
         eventRepository.save(event)
 
-        return com.example.authenticationservice.application.web.controller.dto.response.CreateEventDto(event)
+        return com.example.authenticationservice.application.web.dto.response.CreateEventDto(event)
     }
 
     @Transactional
@@ -167,7 +167,7 @@ class OrganizerService (
             )
         )
     }
-    fun findMusicianByEventLocation(req: HttpServletRequest, eventJobId: Long, filterMusicianRequest: com.example.authenticationservice.application.web.controller.dto.request.FilterMusicianRequest, pageable: Pageable): PageImpl<MusicianEventJobDto> {
+    fun findMusicianByEventLocation(req: HttpServletRequest, eventJobId: Long, filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest, pageable: Pageable): PageImpl<MusicianEventJobDto> {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
         val userId = jwtTokenProvider.getId(token).toLong()
         val instrumentIdAndEventCepDto = eventJobRepository.findInstrumentIdAndEventCepByIdAndUserId(eventJobId, userId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Você não pode buscar um músico para este evento")
@@ -202,7 +202,7 @@ class OrganizerService (
        return musiciansEventJobDto
     }
 
-    fun findEventsByOrganizer(req: HttpServletRequest): List<com.example.authenticationservice.application.web.controller.dto.response.CalendarEventDto> {
+    fun findEventsByOrganizer(req: HttpServletRequest): List<com.example.authenticationservice.application.web.dto.response.CalendarEventDto> {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
         val userId = jwtTokenProvider.getId(token).toLong()
 

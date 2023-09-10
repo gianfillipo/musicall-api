@@ -1,6 +1,6 @@
 package com.example.authenticationservice.domain.entities
 
-import com.example.authenticationservice.application.web.controller.dto.request.RegisterMusicianRequest
+import com.example.authenticationservice.application.web.dto.request.RegisterMusicianRequest
 import javax.persistence.*
 
 @Entity
@@ -38,7 +38,7 @@ data class Musician(
         imageUrl = ""
     )
 
-    constructor(registerMusicianRequest: com.example.authenticationservice.application.web.controller.dto.request.RegisterMusicianRequest, user: User) : this(
+    constructor(registerMusicianRequest: com.example.authenticationservice.application.web.dto.request.RegisterMusicianRequest, user: User) : this(
         user = user,
         description = registerMusicianRequest.description!!,
         cep = registerMusicianRequest.cep!!,

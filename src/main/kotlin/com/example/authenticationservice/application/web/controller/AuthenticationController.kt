@@ -2,9 +2,6 @@ package com.example.authenticationservice.application.web.controller
 
 import com.example.authenticationservice.domain.exceptions.ParameterException
 import com.example.authenticationservice.domain.entities.Prospect
-import com.example.authenticationservice.application.web.controller.dto.request.RegisterUserRequest
-import com.example.authenticationservice.application.web.controller.dto.request.PasswordResetRequest
-import com.example.authenticationservice.application.web.controller.dto.request.SetPasswordRequest
 import com.example.authenticationservice.domain.service.AuthenticationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -13,7 +10,6 @@ import org.springframework.validation.FieldError
 import java.util.HashMap
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.http.HttpStatus
-import com.example.authenticationservice.application.web.controller.dto.request.AuthenticationRequest
 import com.example.authenticationservice.domain.service.EmailSenderService
 import com.example.authenticationservice.domain.service.ProspectService
 import com.sun.istack.NotNull
@@ -32,7 +28,7 @@ class AuthenticationController(
 ) {
 
     @PostMapping("/register")
-    fun registerUser(@Valid @RequestBody registerUserRequest: com.example.authenticationservice.application.web.controller.dto.request.RegisterUserRequest): ResponseEntity<Void> {
+    fun registerUser(@Valid @RequestBody registerUserRequest: com.example.authenticationservice.application.web.dto.request.RegisterUserRequest): ResponseEntity<Void> {
         val token = authenticationService.registerUser(registerUserRequest)
         /*emailSenderService.sendEmail(
             "${registerUserRequest.email}",
@@ -51,7 +47,7 @@ class AuthenticationController(
    }
 
     @PostMapping("/login")
-    fun login(@RequestBody @Valid data: com.example.authenticationservice.application.web.controller.dto.request.AuthenticationRequest): ResponseEntity<*> {
+    fun login(@RequestBody @Valid data: com.example.authenticationservice.application.web.dto.request.AuthenticationRequest): ResponseEntity<*> {
         val model = authenticationService.login(data.email!!, data.password!!, data.type!!)
 
         return ResponseEntity.ok(model)
@@ -59,7 +55,7 @@ class AuthenticationController(
 
 
     @PostMapping("/password_reset")
-    fun requestPasswordReset(@Valid @RequestBody passwordResetRequest: com.example.authenticationservice.application.web.controller.dto.request.PasswordResetRequest): ResponseEntity<Void> {
+    fun requestPasswordReset(@Valid @RequestBody passwordResetRequest: com.example.authenticationservice.application.web.dto.request.PasswordResetRequest): ResponseEntity<Void> {
         val resetToken = authenticationService.requestPasswordReset(passwordResetRequest.email)
         /*emailSenderService.sendEmail(
             "${passwordResetRequest.email}",
@@ -71,7 +67,7 @@ class AuthenticationController(
     }
 
     @PutMapping("/password_reset")
-    fun resetPassword(@Valid @RequestBody setPasswordRequest: com.example.authenticationservice.application.web.controller.dto.request.SetPasswordRequest): ResponseEntity<Void> {
+    fun resetPassword(@Valid @RequestBody setPasswordRequest: com.example.authenticationservice.application.web.dto.request.SetPasswordRequest): ResponseEntity<Void> {
         authenticationService.resetPassword(setPasswordRequest.password, setPasswordRequest.token);
 
         return ResponseEntity.status(200).build()

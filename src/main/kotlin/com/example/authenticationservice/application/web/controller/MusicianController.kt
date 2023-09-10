@@ -1,9 +1,9 @@
 package com.example.authenticationservice.application.web.controller
 
-import com.example.authenticationservice.response.*
+import com.example.authenticationservice.application.web.dto.response.*
 import com.example.authenticationservice.domain.exceptions.InvalidJwtAuthenticationException
 import com.example.authenticationservice.domain.exceptions.ParameterException
-import com.example.authenticationservice.request.*
+import com.example.authenticationservice.application.web.dto.request.*
 import com.example.authenticationservice.domain.service.MusicianService
 import com.sun.istack.NotNull
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -28,7 +28,7 @@ class MusicianController (
     @Autowired private val musicianService: MusicianService
 ) {
     @PostMapping("/register")
-    fun registerMusician(req : HttpServletRequest, @Valid @RequestBody registerMusicianRequest: com.example.authenticationservice.application.web.controller.dto.request.RegisterMusicianRequest): ResponseEntity<MusicianDto> {
+    fun registerMusician(req : HttpServletRequest, @Valid @RequestBody registerMusicianRequest: com.example.authenticationservice.application.web.dto.request.RegisterMusicianRequest): ResponseEntity<MusicianDto> {
         val musicianDto = musicianService.registerMusician(registerMusicianRequest, req)
         /*emailSenderService.sendEmail(
             "${registerUserRequest.email}",
@@ -39,28 +39,28 @@ class MusicianController (
         return ResponseEntity.status(201).body(musicianDto)
     }
     @PutMapping("")
-    fun updateMusician(req : HttpServletRequest, @Valid @RequestBody updateMusicianRequest: com.example.authenticationservice.application.web.controller.dto.request.UpdateMusicianRequest): ResponseEntity<Void> {
+    fun updateMusician(req : HttpServletRequest, @Valid @RequestBody updateMusicianRequest: com.example.authenticationservice.application.web.dto.request.UpdateMusicianRequest): ResponseEntity<Void> {
         val eventDto = musicianService.updateMusician(updateMusicianRequest, req)
 
         return ResponseEntity.status(200).build()
     }
 
     @PostMapping("/instrument")
-    fun registerInstrument(req: HttpServletRequest, @RequestBody @Valid registerInstrumentRequest: com.example.authenticationservice.application.web.controller.dto.request.RegisterInstrumentRequest): ResponseEntity<List<InstrumentsDto>> {
+    fun registerInstrument(req: HttpServletRequest, @RequestBody @Valid registerInstrumentRequest: com.example.authenticationservice.application.web.dto.request.RegisterInstrumentRequest): ResponseEntity<List<InstrumentsDto>> {
         val instrumentDto = musicianService.registerInstrument(registerInstrumentRequest, req)
 
         return ResponseEntity.status(201).body(instrumentDto)
     }
 
     @PostMapping("/event")
-    fun findEventsByLocation(req: HttpServletRequest, @RequestBody @Valid filterEventsRequest: com.example.authenticationservice.application.web.controller.dto.request.FilterEventsRequest) : ResponseEntity<List<EventSearchDto>> {
+    fun findEventsByLocation(req: HttpServletRequest, @RequestBody @Valid filterEventsRequest: com.example.authenticationservice.application.web.dto.request.FilterEventsRequest) : ResponseEntity<List<EventSearchDto>> {
         val events = musicianService.getEventsByLocation(filterEventsRequest, req)
 
         return ResponseEntity.status(200).body(events)
     }
 
     @PostMapping("/event/job-request")
-    fun createJobRequest(req: HttpServletRequest, @RequestBody @Valid createJobRequestRequest: com.example.authenticationservice.application.web.controller.dto.request.CreateJobRequestRequest): ResponseEntity<Void> {
+    fun createJobRequest(req: HttpServletRequest, @RequestBody @Valid createJobRequestRequest: com.example.authenticationservice.application.web.dto.request.CreateJobRequestRequest): ResponseEntity<Void> {
         musicianService.createJobRequest(req, createJobRequestRequest)
 
         return ResponseEntity.status(201).build()

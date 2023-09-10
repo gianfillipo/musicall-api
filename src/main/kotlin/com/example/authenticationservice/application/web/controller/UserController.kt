@@ -1,13 +1,13 @@
 package com.example.authenticationservice.application.web.controller
 
-import com.example.authenticationservice.response.InstrumentDto
-import com.example.authenticationservice.response.JobRequestDto
-import com.example.authenticationservice.response.TypeUserDto
+import com.example.authenticationservice.application.web.dto.response.InstrumentDto
+import com.example.authenticationservice.application.web.dto.response.JobRequestDto
+import com.example.authenticationservice.application.web.dto.response.TypeUserDto
 import com.example.authenticationservice.domain.exceptions.InvalidJwtAuthenticationException
 import com.example.authenticationservice.domain.exceptions.ParameterException
-import com.example.authenticationservice.application.web.controller.dto.request.DeleteUserRequest
-import com.example.authenticationservice.application.web.controller.dto.request.EmailResetRequest
-import com.example.authenticationservice.application.web.controller.dto.request.SetEmailRequest
+import com.example.authenticationservice.application.web.dto.request.DeleteUserRequest
+import com.example.authenticationservice.application.web.dto.request.EmailResetRequest
+import com.example.authenticationservice.application.web.dto.request.SetEmailRequest
 import com.example.authenticationservice.domain.service.UserService
 import com.sun.istack.NotNull
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -35,13 +35,13 @@ class UserController (
         return ResponseEntity.status(200).body(userType)
     }
     @DeleteMapping
-    fun deleteUser(req: HttpServletRequest, @RequestBody @Valid deleteUserRequest: com.example.authenticationservice.application.web.controller.dto.request.DeleteUserRequest) : ResponseEntity<Void> {
+    fun deleteUser(req: HttpServletRequest, @RequestBody @Valid deleteUserRequest: com.example.authenticationservice.application.web.dto.request.DeleteUserRequest) : ResponseEntity<Void> {
         val userDto = userService.deleteUser(req, deleteUserRequest)
 
         return ResponseEntity.status(200).build()
     }
     @PostMapping("/change-email")
-    fun requestEmailReset(req: HttpServletRequest, @Valid @RequestBody setEmailRequest: com.example.authenticationservice.application.web.controller.dto.request.EmailResetRequest): ResponseEntity<Void> {
+    fun requestEmailReset(req: HttpServletRequest, @Valid @RequestBody setEmailRequest: com.example.authenticationservice.application.web.dto.request.EmailResetRequest): ResponseEntity<Void> {
         val resetToken = userService.requestEmailReset(req, setEmailRequest)
         /*emailSenderService.sendEmail(
             "${setEmailRequest.email}",
@@ -54,7 +54,7 @@ class UserController (
 
 
     @PatchMapping("/change-email")
-    fun setNewEmail(req: HttpServletRequest, @Valid @NotBlank @NotNull @RequestBody setEmailRequest: com.example.authenticationservice.application.web.controller.dto.request.SetEmailRequest): ResponseEntity<Void> {
+    fun setNewEmail(req: HttpServletRequest, @Valid @NotBlank @NotNull @RequestBody setEmailRequest: com.example.authenticationservice.application.web.dto.request.SetEmailRequest): ResponseEntity<Void> {
         userService.setNewEmail(req, setEmailRequest)
 
         return ResponseEntity.status(200).build()

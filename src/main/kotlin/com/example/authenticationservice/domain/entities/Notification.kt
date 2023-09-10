@@ -1,6 +1,6 @@
 package com.example.authenticationservice.domain.entities
 
-import com.example.authenticationservice.response.NotificationTypeDto
+import com.example.authenticationservice.application.web.dto.response.NotificationTypeDto
 import javax.persistence.*
 
 @Entity

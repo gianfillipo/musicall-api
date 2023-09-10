@@ -3,13 +3,13 @@ package com.example.authenticationservice.domain.service
 import com.example.authenticationservice.domain.repositories.JobRequestRepository
 import com.example.authenticationservice.domain.repositories.NotificationRepository
 import com.example.authenticationservice.domain.repositories.UserRepository
-import com.example.authenticationservice.response.InstrumentDto
-import com.example.authenticationservice.response.JobRequestDto
-import com.example.authenticationservice.response.NotificationTypeDto
-import com.example.authenticationservice.response.TypeUserDto
-import com.example.authenticationservice.application.web.controller.dto.request.DeleteUserRequest
-import com.example.authenticationservice.application.web.controller.dto.request.EmailResetRequest
-import com.example.authenticationservice.application.web.controller.dto.request.SetEmailRequest
+import com.example.authenticationservice.application.web.dto.response.InstrumentDto
+import com.example.authenticationservice.application.web.dto.response.JobRequestDto
+import com.example.authenticationservice.application.web.dto.response.NotificationTypeDto
+import com.example.authenticationservice.application.web.dto.response.TypeUserDto
+import com.example.authenticationservice.application.web.dto.request.DeleteUserRequest
+import com.example.authenticationservice.application.web.dto.request.EmailResetRequest
+import com.example.authenticationservice.application.web.dto.request.SetEmailRequest
 import com.example.authenticationservice.application.config.security.JwtTokenProvider
 import org.mindrot.jbcrypt.BCrypt
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,7 +28,7 @@ class UserService (
     @Autowired private val musicianService: MusicianService,
     @Autowired private val organizerService: OrganizerService
 ) {
-    fun deleteUser(req: HttpServletRequest, deleteUserRequest: com.example.authenticationservice.application.web.controller.dto.request.DeleteUserRequest) {
+    fun deleteUser(req: HttpServletRequest, deleteUserRequest: com.example.authenticationservice.application.web.dto.request.DeleteUserRequest) {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "User invalid role JWT token.")
         val id = jwtTokenProvider.getId(token).toLong()
         val user = userRepository.getById(id)?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
@@ -37,7 +37,7 @@ class UserService (
         userRepository.delete(user)
     }
 
-    fun requestEmailReset(req: HttpServletRequest, emailRequest: com.example.authenticationservice.application.web.controller.dto.request.EmailResetRequest): String {
+    fun requestEmailReset(req: HttpServletRequest, emailRequest: com.example.authenticationservice.application.web.dto.request.EmailResetRequest): String {
         val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "User invalid role JWT token.")
         val id = jwtTokenProvider.getId(token).toLong()
         val user = userRepository.getById(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
@@ -49,7 +49,7 @@ class UserService (
         return user.confirmationToken
     }
 
-    fun setNewEmail(req: HttpServletRequest, setEmailRequest: com.example.authenticationservice.application.web.controller.dto.request.SetEmailRequest) {
+    fun setNewEmail(req: HttpServletRequest, setEmailRequest: com.example.authenticationservice.application.web.dto.request.SetEmailRequest) {
         val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "User invalid role JWT token.")
         val id = jwtTokenProvider.getId(token).toLong()
         val user = userRepository.getById(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")

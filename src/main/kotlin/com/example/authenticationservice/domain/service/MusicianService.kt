@@ -4,10 +4,10 @@ import com.example.authenticationservice.application.web.utils.GoogleMapsUtils
 import com.example.authenticationservice.domain.entities.*
 import com.example.authenticationservice.domain.entities.JobRequest
 import com.example.authenticationservice.domain.repositories.*
-import com.example.authenticationservice.response.*
-import com.example.authenticationservice.application.web.controller.mapper.MusicianMapper
-import com.example.authenticationservice.request.*
+import com.example.authenticationservice.application.web.dto.response.*
+import com.example.authenticationservice.application.web.dto.request.*
 import com.example.authenticationservice.application.config.security.JwtTokenProvider
+import com.example.authenticationservice.application.web.dto.mapper.MusicianMapper
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageImpl
@@ -33,7 +33,7 @@ class MusicianService (
     @Autowired private val notificationRepository: NotificationRepository,
     @Autowired private val googleMapsService: GoogleMapsUtils
 ) {
-    fun registerMusician(registerMusicianRequest: com.example.authenticationservice.application.web.controller.dto.request.RegisterMusicianRequest, req : HttpServletRequest) : MusicianDto {
+    fun registerMusician(registerMusicianRequest: com.example.authenticationservice.application.web.dto.request.RegisterMusicianRequest, req : HttpServletRequest) : MusicianDto {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
         val id = jwtTokenProvider.getId(token).toLong()
         val user = userRepository.getById(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado")
@@ -46,7 +46,7 @@ class MusicianService (
         return musicianMapper.toDto(musician)
     }
 
-    fun registerInstrument(registerInstrumentRequest: com.example.authenticationservice.application.web.controller.dto.request.RegisterInstrumentRequest, req: HttpServletRequest): List<InstrumentsDto> {
+    fun registerInstrument(registerInstrumentRequest: com.example.authenticationservice.application.web.dto.request.RegisterInstrumentRequest, req: HttpServletRequest): List<InstrumentsDto> {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
         val id = jwtTokenProvider.getId(token).toLong()
         val user = userRepository.getById(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado")
@@ -70,7 +70,7 @@ class MusicianService (
 
         return musicianInstruments.map { InstrumentsDto(it.instrument.id, it.instrument.name) }
     }
-    fun getEventsByLocation(filterEventsRequest: com.example.authenticationservice.application.web.controller.dto.request.FilterEventsRequest, req: HttpServletRequest): List<EventSearchDto> {
+    fun getEventsByLocation(filterEventsRequest: com.example.authenticationservice.application.web.dto.request.FilterEventsRequest, req: HttpServletRequest): List<EventSearchDto> {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
         val id = jwtTokenProvider.getId(token).toLong()
         val cep = musicianRepository.findCepByUserId(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Complete seu cadastro como músico")
@@ -111,7 +111,7 @@ class MusicianService (
         return eventsDto.sortedBy { it.distance }
     }
 
-    fun updateMusician(updateMusicianRequest: com.example.authenticationservice.application.web.controller.dto.request.UpdateMusicianRequest, req: HttpServletRequest) {
+    fun updateMusician(updateMusicianRequest: com.example.authenticationservice.application.web.dto.request.UpdateMusicianRequest, req: HttpServletRequest) {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
         val id = jwtTokenProvider.getId(token).toLong()
         val musician = musicianRepository.getMusicianByUserId(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado")
@@ -140,7 +140,7 @@ class MusicianService (
         musicianRepository.save(musician)
     }
 
-    fun createJobRequest(req: HttpServletRequest, createJobRequestRequest: com.example.authenticationservice.application.web.controller.dto.request.CreateJobRequestRequest) {
+    fun createJobRequest(req: HttpServletRequest, createJobRequestRequest: com.example.authenticationservice.application.web.dto.request.CreateJobRequestRequest) {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inváido")
         val id = jwtTokenProvider.getId(token).toLong()
         val musician = musicianRepository.findByUserId(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Complete seu cadastro como músico")
@@ -173,7 +173,7 @@ class MusicianService (
         jobRequestRepository.deleteById(deleteJobRequestDto.id)
     }
 
-    fun findMusicianEventJobDtoByInstrumentId(instrumentId: Long, filterMusicianRequest: com.example.authenticationservice.application.web.controller.dto.request.FilterMusicianRequest, pageable: Pageable): PageImpl<MusicianEventJobDto> {
+    fun findMusicianEventJobDtoByInstrumentId(instrumentId: Long, filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest, pageable: Pageable): PageImpl<MusicianEventJobDto> {
         val musicians = musicianRepository.findMusicianByIdAndEventLocation(instrumentId, filterMusicianRequest, pageable)
 
         return musicians

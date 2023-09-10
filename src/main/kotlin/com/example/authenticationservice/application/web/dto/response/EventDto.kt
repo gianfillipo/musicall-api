@@ -13,7 +13,7 @@ data class EventDto(
         val startHour: Time,
         val durationHours: Int,
         val imageUrl: String,
-        val eventJobs: List<com.example.authenticationservice.application.web.controller.dto.response.EventJobDto>
+        val eventJobs: List<com.example.authenticationservice.application.web.dto.response.EventJobDto>
 ) {
         var distance: Int = Int.MAX_VALUE
 
@@ -27,7 +27,7 @@ data class EventDto(
             durationHours = event.durationHours,
             imageUrl = event.imageUrl,
             eventJobs = event.eventJob.map {
-                    com.example.authenticationservice.application.web.controller.dto.response.EventJobDto(
+                    com.example.authenticationservice.application.web.dto.response.EventJobDto(
                             it
                     )
             }
