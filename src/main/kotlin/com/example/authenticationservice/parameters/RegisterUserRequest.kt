@@ -30,10 +30,7 @@ data class RegisterUserRequest(
         @JsonProperty("telephone")
         @field:NotNull(message = "O telefone não pode ser nulo.")
         @field:NotBlank(message = "O telefone não pode estar em branco.")
-        @field:Pattern(
-                regexp = "(\\(?\\d{2}\\)?\\s)?(\\d{4,5}\\-\\d{4})",
-                message = "Envie um telefone válido."
-        )
+
         val telephone: String?,
 
         @JsonProperty("email")

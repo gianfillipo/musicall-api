@@ -73,6 +73,7 @@ class AuthenticationService(
         val model = HashMap<Any, Any>()
         model["email"] = email
         model["token"] = token
+        model["id"] = user.id
         return model
-    }
+        }
 }
