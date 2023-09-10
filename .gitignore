@@ -31,3 +31,4 @@ build/
 
 ### Docker
 docker/.env
+docker/data
