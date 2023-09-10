@@ -1,19 +1,19 @@
 package com.example.authenticationservice.controller
 
-import com.example.authenticationservice.dto.*
-import com.example.authenticationservice.exceptions.InvalidJwtAuthenticationException
-import com.example.authenticationservice.exceptions.ParameterException
-import com.example.authenticationservice.parameters.FilterEventsRequest
-import com.example.authenticationservice.parameters.RegisterInstrumentRequest
-import com.example.authenticationservice.parameters.RegisterMusicianRequest
-import com.example.authenticationservice.parameters.UpdateMusicianRequest
-import com.example.authenticationservice.service.MusicianService
+import com.example.authenticationservice.application.web.controller.MusicianController
+import com.example.authenticationservice.response.*
+import com.example.authenticationservice.domain.exceptions.InvalidJwtAuthenticationException
+import com.example.authenticationservice.domain.exceptions.ParameterException
+import com.example.authenticationservice.application.web.controller.dto.request.FilterEventsRequest
+import com.example.authenticationservice.application.web.controller.dto.request.RegisterInstrumentRequest
+import com.example.authenticationservice.application.web.controller.dto.request.RegisterMusicianRequest
+import com.example.authenticationservice.application.web.controller.dto.request.UpdateMusicianRequest
+import com.example.authenticationservice.domain.service.MusicianService
 import io.mockk.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
-import java.time.LocalDate
 
 import javax.servlet.http.HttpServletRequest
 
@@ -33,7 +33,12 @@ class MusicianControllerTest {
     fun testRegisterMusician() {
         // Arrange
         val request = mockk<HttpServletRequest>(relaxed = true)
-        val registerMusicianRequest = RegisterMusicianRequest("John Doe", "john@example.com", "password")
+        val registerMusicianRequest =
+            com.example.authenticationservice.application.web.controller.dto.request.RegisterMusicianRequest(
+                "John Doe",
+                "john@example.com",
+                "password"
+            )
         val musicianDto = MusicianDto(String(), String())
         every { musicianService.registerMusician(any(), any()) } returns musicianDto
 
@@ -50,7 +55,12 @@ class MusicianControllerTest {
     fun testUpdateMusician() {
         // Arrange
         val request = mockk<HttpServletRequest>(relaxed = true)
-        val updateMusicianRequest = UpdateMusicianRequest(String(), String(), String())
+        val updateMusicianRequest =
+            com.example.authenticationservice.application.web.controller.dto.request.UpdateMusicianRequest(
+                String(),
+                String(),
+                String()
+            )
         every { musicianService.updateMusician(any(), any()) } just Runs
 
         // Act
@@ -65,7 +75,7 @@ class MusicianControllerTest {
     fun testFindEventsByLocation() {
         // Arrange
         val request = mockk<HttpServletRequest>(relaxed = true)
-        val filterEventsRequest = mockk<FilterEventsRequest>()
+        val filterEventsRequest = mockk<com.example.authenticationservice.application.web.controller.dto.request.FilterEventsRequest>()
         val eventDto1 = mockk<EventSearchDto>()
         val eventDto2 = mockk<EventSearchDto>()
         val events = listOf(eventDto1, eventDto2)
@@ -84,7 +94,8 @@ class MusicianControllerTest {
     fun testRegisterInstrument() {
         // Arrange
         val request = mockk<HttpServletRequest>(relaxed = true)
-        val registerInstrumentRequest = RegisterInstrumentRequest(listOf(5L))
+        val registerInstrumentRequest =
+            com.example.authenticationservice.application.web.controller.dto.request.RegisterInstrumentRequest(listOf(5L))
         val instrumentDto1 = InstrumentsDto(1, "Guitar")
         val instrumentDto2 = InstrumentsDto(2, "Bass")
         val instrumentDtos = listOf(instrumentDto1, instrumentDto2)

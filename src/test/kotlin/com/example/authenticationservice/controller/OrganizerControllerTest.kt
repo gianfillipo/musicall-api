@@ -1,32 +1,17 @@
-import com.example.authenticationservice.controller.OrganizerController
-import com.example.authenticationservice.dto.CreateEventDto
-import com.example.authenticationservice.dto.EventJobDto
-import com.example.authenticationservice.dto.MusicianEventJobDto
-import com.example.authenticationservice.exceptions.ParameterException
-import com.example.authenticationservice.parameters.CreateEventJobRequest
-import com.example.authenticationservice.parameters.CreateEventRequest
-import com.example.authenticationservice.parameters.DeleteEventRequest
-import com.example.authenticationservice.parameters.FilterMusicianRequest
-import com.example.authenticationservice.parameters.UpdateEventRequest
-import com.example.authenticationservice.sample.RegisterEventSample
-import com.example.authenticationservice.service.OrganizerService
+import com.example.authenticationservice.application.web.controller.OrganizerController
+import com.example.authenticationservice.application.web.controller.dto.response.CreateEventDto
+import com.example.authenticationservice.response.EventJobDto
+import com.example.authenticationservice.application.web.controller.dto.request.CreateEventJobRequest
+import com.example.authenticationservice.application.web.controller.dto.request.CreateEventRequest
+import com.example.authenticationservice.application.web.controller.dto.request.DeleteEventRequest
+import com.example.authenticationservice.application.web.controller.dto.request.UpdateEventRequest
+import com.example.authenticationservice.domain.service.OrganizerService
 import io.mockk.*
-import org.hibernate.sql.Update
-import org.hibernate.validator.internal.engine.ConstraintViolationImpl
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentCaptor
-import org.springframework.data.domain.PageImpl
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.validation.FieldError
-import java.sql.Time
-import java.time.LocalDate
-import java.time.LocalTime
 import javax.servlet.http.HttpServletRequest
-import javax.validation.ConstraintViolationException
-import javax.validation.Validator
 
 class OrganizerControllerTest {
     private lateinit var organizerService: OrganizerService
@@ -41,9 +26,9 @@ class OrganizerControllerTest {
     @Test
     fun `should create a event and return createEventDto`() {
         val request = mockk<HttpServletRequest>(relaxed = true)
-        val createEventRequest = mockk<CreateEventRequest>(relaxed = true)
+        val createEventRequest = mockk<com.example.authenticationservice.application.web.controller.dto.request.CreateEventRequest>(relaxed = true)
 
-        val createEventDto = CreateEventDto()
+        val createEventDto = com.example.authenticationservice.application.web.controller.dto.response.CreateEventDto()
         every { organizerService.createEvent(any(), any()) } returns createEventDto
 
         val response = organizerController.createEvent(request, createEventRequest)
@@ -56,7 +41,7 @@ class OrganizerControllerTest {
     @Test
     fun `should create a eventJob and return eventJobDto`() {
         val request: HttpServletRequest = mockk<HttpServletRequest>(relaxed = true)
-        val createEventJobRequest = mockk<CreateEventJobRequest>(relaxed = true)
+        val createEventJobRequest = mockk<com.example.authenticationservice.application.web.controller.dto.request.CreateEventJobRequest>(relaxed = true)
 
         every { organizerService.createEventJob(any(), any()) } returns listOf<EventJobDto>()
 
@@ -71,8 +56,8 @@ class OrganizerControllerTest {
     @Test
     fun `should update event and return createEventDto`() {
         val request: HttpServletRequest = mockk<HttpServletRequest>(relaxed = true)
-        val createEventJobRequest = mockk<UpdateEventRequest>(relaxed = true)
-        val createEventDto = CreateEventDto()
+        val createEventJobRequest = mockk<com.example.authenticationservice.application.web.controller.dto.request.UpdateEventRequest>(relaxed = true)
+        val createEventDto = com.example.authenticationservice.application.web.controller.dto.response.CreateEventDto()
 
         every { organizerService.updateEvent(any(), any()) } returns createEventDto
 
@@ -87,7 +72,7 @@ class OrganizerControllerTest {
     @Test
     fun `should delete event`() {
         val request: HttpServletRequest = mockk<HttpServletRequest>(relaxed = true)
-        val deleteEventJobRequest = mockk<DeleteEventRequest>(relaxed = true)
+        val deleteEventJobRequest = mockk<com.example.authenticationservice.application.web.controller.dto.request.DeleteEventRequest>(relaxed = true)
 
         every { organizerService.deleteEvent(any(), any()) } returns Unit
 

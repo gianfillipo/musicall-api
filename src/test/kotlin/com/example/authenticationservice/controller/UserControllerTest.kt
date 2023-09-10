@@ -1,8 +1,9 @@
 package com.example.authenticationservice.controller
 
-import com.example.authenticationservice.exceptions.InvalidJwtAuthenticationException
-import com.example.authenticationservice.parameters.EmailResetRequest
-import com.example.authenticationservice.service.UserService
+import com.example.authenticationservice.application.web.controller.UserController
+import com.example.authenticationservice.domain.exceptions.InvalidJwtAuthenticationException
+import com.example.authenticationservice.application.web.controller.dto.request.EmailResetRequest
+import com.example.authenticationservice.domain.service.UserService
 import io.mockk.*
 import org.junit.jupiter.api.Assertions.*
 import io.mockk.junit5.MockKExtension
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import javax.servlet.http.HttpServletRequest
-import javax.validation.Valid
 
 @ExtendWith(MockKExtension::class)
     class UserControllerTest {
@@ -44,7 +44,7 @@ import javax.validation.Valid
         val request = mockk<HttpServletRequest>()
 
 
-        val setEmailRequest = mockk<EmailResetRequest>()
+        val setEmailRequest = mockk<com.example.authenticationservice.application.web.controller.dto.request.EmailResetRequest>()
 
         val resetToken = "dummyToken"
         every { userService.requestEmailReset(request, setEmailRequest) } returns resetToken

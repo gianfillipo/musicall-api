@@ -1,26 +1,15 @@
-import com.example.authenticationservice.controller.AuthenticationController
-import com.example.authenticationservice.dto.TypeUserDto
-import com.example.authenticationservice.exceptions.ParameterException
-import com.example.authenticationservice.model.Prospect
-import com.example.authenticationservice.parameters.AuthenticationRequest
-import com.example.authenticationservice.parameters.PasswordResetRequest
-import com.example.authenticationservice.parameters.RegisterUserRequest
-import com.example.authenticationservice.parameters.SetPasswordRequest
-import com.example.authenticationservice.service.AuthenticationService
-import com.example.authenticationservice.service.EmailSenderService
-import com.example.authenticationservice.service.ProspectService
+import com.example.authenticationservice.application.web.controller.AuthenticationController
+import com.example.authenticationservice.domain.exceptions.ParameterException
+import com.example.authenticationservice.domain.entities.Prospect
+import com.example.authenticationservice.application.web.controller.dto.request.SetPasswordRequest
+import com.example.authenticationservice.domain.service.AuthenticationService
+import com.example.authenticationservice.domain.service.EmailSenderService
+import com.example.authenticationservice.domain.service.ProspectService
 import io.mockk.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
-import org.springframework.validation.FieldError
-import org.springframework.web.bind.MethodArgumentNotValidException
-import org.springframework.web.server.ResponseStatusException
-import java.util.HashMap
-import javax.validation.ConstraintViolationException
 import javax.validation.Validation
 import javax.validation.Validator
 import javax.validation.ValidatorFactory
@@ -70,7 +59,11 @@ class AuthenticationControllerTest {
     @Test
     fun testResetPassword_ValidRequest_ReturnsOk() {
         // Arrange
-        val setPasswordRequest = SetPasswordRequest("password", "token")
+        val setPasswordRequest =
+            com.example.authenticationservice.application.web.controller.dto.request.SetPasswordRequest(
+                "password",
+                "token"
+            )
         every {
             authenticationService.resetPassword(
                 setPasswordRequest.password,
