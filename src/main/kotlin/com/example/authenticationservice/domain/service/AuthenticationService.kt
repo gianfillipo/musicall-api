@@ -74,6 +74,7 @@ class AuthenticationService(
         model["email"] = email
         model["token"] = token
         model["id"] = user.id
+        model["name"] = user.name
         return model
         }
 }
