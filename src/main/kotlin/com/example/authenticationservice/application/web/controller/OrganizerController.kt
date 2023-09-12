@@ -43,7 +43,7 @@ class OrganizerController (
 
 
     @GetMapping("/event/{id}")
-    fun findEventsByOrganizerByEventId(req : HttpServletRequest, @PathVariable("id") id:String) : List<CalendarEventByIdDto> {
+    fun findEventsByOrganizerByEventId(req : HttpServletRequest, @PathVariable("id") id:Long) : List<CalendarEventByIdDto> {
         val createEventDto = organizerService.findEventsByOrganizerByEventId(req,id)
 
         return createEventDto

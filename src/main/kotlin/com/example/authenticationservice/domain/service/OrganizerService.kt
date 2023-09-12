@@ -212,11 +212,11 @@ class OrganizerService (
         return events
     }
 
-    fun findEventsByOrganizerByEventId(req: HttpServletRequest, id: String): List<CalendarEventByIdDto> {
+    fun findEventsByOrganizerByEventId(req: HttpServletRequest, id: Long): List<CalendarEventByIdDto> {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
         val userId = jwtTokenProvider.getId(token).toLong()
 
-        val events = eventRepository.findCalendarEventsByOganizerByEventId(userId)
+        val events = eventRepository.findCalendarEventsByOganizerByEventId(userId, eventId = id)
         if (events.isEmpty()) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Vocẽ não pode aprovar esse job")
 
         return events

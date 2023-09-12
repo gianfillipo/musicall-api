@@ -26,10 +26,12 @@ interface EventRepository : EventRepositoryCustom, JpaRepository<Event, Long> {
     fun findCalendarEventsByOganizer(userId: Long): List<com.example.authenticationservice.application.web.dto.response.CalendarEventDto>
 
     @Query("""
-        select new com.example.authenticationservice.application.web.dto.response.CalendarEventDto(e)
+        select new com.example.authenticationservice.application.web.dto.response.CalendarEventByIdDto(e)
             from Event e
                   where e.user.id = :userId
+                  and e.id = :eventId 
                   order by e.eventDate asc
+                  
     """)
-    fun findCalendarEventsByOganizerByEventId(userId: Long): List<CalendarEventByIdDto>
+    fun findCalendarEventsByOganizerByEventId(userId: Long, eventId:Long): List<CalendarEventByIdDto>
 }

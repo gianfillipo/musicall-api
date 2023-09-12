@@ -6,6 +6,7 @@ import java.time.LocalDate
 
 class CalendarEventByIdDto(
     val id: Long,
+    val aboutEvent:String,
     val name: String,
     val eventDate: LocalDate,
     val vagas: List<EventJobDto>,
@@ -18,6 +19,7 @@ class CalendarEventByIdDto(
 
     constructor(event: Event) : this(
         id = event.id,
+        aboutEvent = event.aboutEvent,
         name = event.name,
         eventDate = event.eventDate,
         vagas = event.eventJob.map { EventJobDto(it) },
