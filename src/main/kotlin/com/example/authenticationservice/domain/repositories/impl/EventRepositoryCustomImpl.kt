@@ -28,6 +28,7 @@ class EventRepositoryCustomImpl (
             cb.construct(
                 EventSearchDto::class.java,
                 root.get<Long>("id"),
+                root.get<String>("name"),
                 root.get<String>("imageUrl"),
                 root.get<LocalDate>("eventDate"),
                 root.get<Date>("startHour"),

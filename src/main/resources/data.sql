@@ -51,7 +51,11 @@ VALUES
   (1, 'My Event - RJ', 'sei lá', '20000000', 2, 'My Complement', '2023-12-19', 2, '00:00:00', false, 'https://images.pexels.com/photos/265947/pexels-photo-265947.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'My Event - RN', 'sei lá', '59000000', 2, 'My Complement', '2023-12-20', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'My Event - RS', 'sei lá', '90000000', 2, 'My Complement', '2023-12-21', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
-  (1, 'My Event - RS', 'sei lá', '03366010', 2, 'My Complement', '2023-12-21', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600');
+  (1, 'My Event - RS', 'sei lá', '03366010', 2, 'My Complement', '2023-12-21', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
+  (1, 'Igreja da Sé', 'sei lá', '03366010', 2, 'My Complement', '2023-09-15', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
+  (1, 'Cristo Redentor', 'sei lá', '03366010', 2, 'My Complement', '2023-09-16', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
+  (1, 'SPTECH Music Talent', 'sei lá', '03366010', 2, 'My Complement', '2023-09-19', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600');
+
 
 INSERT INTO event_job (event_id, instrument_id, musician_id, payment)
 VALUES

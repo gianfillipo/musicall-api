@@ -1,5 +1,6 @@
 package com.example.authenticationservice.application.web.controller
 
+import com.example.authenticationservice.application.web.dto.response.CalendarEventByIdDto
 import com.example.authenticationservice.application.web.dto.response.EventJobDto
 import com.example.authenticationservice.application.web.dto.response.MusicianEventJobDto
 import com.example.authenticationservice.domain.exceptions.ParameterException
@@ -36,6 +37,14 @@ class OrganizerController (
     @GetMapping("/event")
     fun findEventsByOrganizer(req : HttpServletRequest) : List<com.example.authenticationservice.application.web.dto.response.CalendarEventDto> {
         val createEventDto = organizerService.findEventsByOrganizer(req)
+
+        return createEventDto
+    }
+
+
+    @GetMapping("/event/{id}")
+    fun findEventsByOrganizerByEventId(req : HttpServletRequest, @PathVariable("id") id:Long) : List<CalendarEventByIdDto> {
+        val createEventDto = organizerService.findEventsByOrganizerByEventId(req,id)
 
         return createEventDto
     }
