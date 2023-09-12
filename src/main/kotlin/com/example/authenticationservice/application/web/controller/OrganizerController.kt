@@ -40,6 +40,14 @@ class OrganizerController (
         return createEventDto
     }
 
+
+    @GetMapping("/event/{id}")
+    fun findEventsByOrganizerByEventId(req : HttpServletRequest, @PathVariable("id") id:String) : List<com.example.authenticationservice.application.web.dto.response.CalendarEventDto> {
+        val createEventDto = organizerService.findEventsByOrganizerByEventId(req,id)
+
+        return createEventDto
+    }
+
     @PostMapping("/event/job")
     fun createEventJob(req : HttpServletRequest, @Valid @RequestBody createEventJobRequest: com.example.authenticationservice.application.web.dto.request.CreateEventJobRequest) : ResponseEntity<List<EventJobDto>> {
         val eventJobsDto : List<EventJobDto> = organizerService.createEventJob(createEventJobRequest, req)

@@ -1,5 +1,6 @@
 package com.example.authenticationservice.domain.repositories
 
+import com.example.authenticationservice.application.web.dto.response.CalendarEventByIdDto
 import com.example.authenticationservice.domain.entities.Event
 import com.example.authenticationservice.domain.entities.User
 import org.springframework.data.jpa.repository.JpaRepository
@@ -23,4 +24,12 @@ interface EventRepository : EventRepositoryCustom, JpaRepository<Event, Long> {
                   order by e.eventDate asc
     """)
     fun findCalendarEventsByOganizer(userId: Long): List<com.example.authenticationservice.application.web.dto.response.CalendarEventDto>
+
+    @Query("""
+        select new com.example.authenticationservice.application.web.dto.response.CalendarEventDto(e)
+            from Event e
+                  where e.user.id = :userId
+                  order by e.eventDate asc
+    """)
+    fun findCalendarEventsByOganizerByEventId(userId: Long): List<CalendarEventByIdDto>
 }

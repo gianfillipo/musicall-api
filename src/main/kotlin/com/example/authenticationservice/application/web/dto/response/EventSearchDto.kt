@@ -5,6 +5,7 @@ import java.time.LocalDate
 
 data class EventSearchDto (
     val id:Long,
+    val nome:String,
     val imageUrl:String,
     val eventDate:LocalDate,
     val startHour: Date,
@@ -14,6 +15,7 @@ data class EventSearchDto (
 
     constructor() : this(
         id = 0,
+        nome = "",
         imageUrl = "",
         eventDate = LocalDate.now(),
         startHour = Date(0),
@@ -21,8 +23,9 @@ data class EventSearchDto (
         distance = 0
     )
 
-    constructor(id: Long, imageUrl: String, eventDate: LocalDate, startHour: Date, cep: String) : this(
+    constructor(id: Long,nome:String, imageUrl: String, eventDate: LocalDate, startHour: Date, cep: String) : this(
         id = id,
+        nome = nome,
         imageUrl = imageUrl,
         eventDate = eventDate,
         startHour = startHour,

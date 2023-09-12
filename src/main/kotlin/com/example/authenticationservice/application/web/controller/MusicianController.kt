@@ -53,10 +53,10 @@ class MusicianController (
     }
 
     @PostMapping("/event")
-    fun findEventsByLocation(req: HttpServletRequest, @RequestBody @Valid filterEventsRequest: com.example.authenticationservice.application.web.dto.request.FilterEventsRequest) : ResponseEntity<List<EventSearchDto>> {
-        val events = musicianService.getEventsByLocation(filterEventsRequest, req)
+        fun findEventsByLocation(req: HttpServletRequest, @RequestBody @Valid filterEventsRequest: com.example.authenticationservice.application.web.dto.request.FilterEventsRequest) : ResponseEntity<List<EventSearchDto>> {
+            val events = musicianService.getEventsByLocation(filterEventsRequest, req)
 
-        return ResponseEntity.status(200).body(events)
+            return ResponseEntity.status(200).body(events)
     }
 
     @PostMapping("/event/job-request")
