@@ -20,6 +20,11 @@ class CalendarEventByIdDto(
         id = event.id,
         name = event.name,
         eventDate = event.eventDate,
-        vagas = event.eventJob.map { EventJobDto(it) }
+        vagas = event.eventJob.map { EventJobDto(it) },
+        cep = event.cep,
+        numero= event.number,
+        complemento = event.complement,
+        horaioInicio = event.startHour,
+        duracaoEvento = event.durationHours
     )
 }
