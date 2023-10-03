@@ -1,6 +1,7 @@
 package com.example.authenticationservice.domain.repositories
 
 import com.example.authenticationservice.application.web.dto.response.CalendarEventByIdDto
+import com.example.authenticationservice.application.web.dto.response.EventDto
 import com.example.authenticationservice.domain.entities.Event
 import com.example.authenticationservice.domain.entities.User
 import org.springframework.data.jpa.repository.JpaRepository
@@ -34,4 +35,7 @@ interface EventRepository : EventRepositoryCustom, JpaRepository<Event, Long> {
                   
     """)
     fun findCalendarEventsByOganizerByEventId(userId: Long, eventId:Long): List<CalendarEventByIdDto>
+
+    @Query("SELECT e FROM Event e WHERE e.id = :id")
+    fun findEventById(id: Long): EventDto?
 }

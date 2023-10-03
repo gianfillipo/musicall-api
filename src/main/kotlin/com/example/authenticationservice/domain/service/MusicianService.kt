@@ -5,7 +5,6 @@ import com.example.authenticationservice.domain.entities.*
 import com.example.authenticationservice.domain.entities.JobRequest
 import com.example.authenticationservice.domain.repositories.*
 import com.example.authenticationservice.application.web.dto.response.*
-import com.example.authenticationservice.application.web.dto.request.*
 import com.example.authenticationservice.application.config.security.JwtTokenProvider
 import com.example.authenticationservice.application.web.dto.mapper.MusicianMapper
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -184,5 +183,11 @@ class MusicianService (
 
         val result = musicianRepository.validationMusician(userId)
         return result == "1"
+    }
+
+    fun getEventsById(req: HttpServletRequest, eventId: Long): EventDto? {
+        jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
+
+        return eventRepository.findEventById(eventId)
     }
 }
