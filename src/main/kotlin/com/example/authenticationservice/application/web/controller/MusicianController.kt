@@ -80,6 +80,13 @@ class MusicianController (
         return ResponseEntity.status(200).body(result)
     }
 
+    @GetMapping("/event/{eventId}")
+    fun findEventsByEventId(req: HttpServletRequest, @PathVariable("eventId") @NotNull id: Long) : ResponseEntity<EventDto> {
+        val result = musicianService.getEventsById(req, id)
+
+        return ResponseEntity.status(200).body(result)
+    }
+
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(InvalidJwtAuthenticationException::class)
     fun handleValidationExceptions(ex: InvalidJwtAuthenticationException): Map<String, String> {
