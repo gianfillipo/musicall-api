@@ -17,6 +17,7 @@ INSERT INTO instrument (name) VALUES
 
 INSERT INTO user (birth_date, confirmation_token, cpf, email, is_confirmed, is_password_reset_requested, name, number_of_events, password, password_reset_token, telephone, type)
 VALUES ('2000-01-01', 'c111cf08-a6e8-4611-b624-e1d4c4a45978', '12345678901', 'john.doe@example.com', true, false, 'John', 0, '$2a$10$H9BHHHpnGo2lrMCeGGcRWuZC5Pt9pL9K6dGz3yNCorqw0LoM1l.fS', '', '99999999999', 'ORG'),
+       ('2000-01-01', 'c111cf08-a6e8-4611-b624-e1d4c4a45978', '12345678902', 'john3.doe@example.com', true, false, 'John2   ', 0, '$2a$10$H9BHHHpnGo2lrMCeGGcRWuZC5Pt9pL9K6dGz3yNCorqw0LoM1l.fS', '', '99929999999', 'ORG'),
        ('2000-01-01', 'c111cf08-a6e8-4611-b624-e1d4c4a45978', '12345678903', 'john2.doe@example.com', true, false, 'John', 0, '$2a$10$IgJaWyQfnW1Vu7huiZ5Ht.hrWb0xKhGWIrTPciOzriBdxslN.4qXK', '', '99919999999', 'MSC'),
        ('1994-07-21', 's5t7u9v1w3x5', '12345678913', 'musician4@example.com', true, false, 'Roberto Andrade', 0, '$2a$10$igjawyqfnw1vu7huiz5ht.hrwb0xkhgwirtpciozribdxsln.4qxk', '', '99919999989', 'MSC'),
        ('1991-03-17', 'y0z1a2b3c4d5', '12345678914', 'musician5@example.com', true, false, 'Erick Mendes', 0, '$2a$10$igjawyqfnw1vu7huiz5ht.hrwb0xkhgwirtpciozribdxsln.4qxk', '', '98919999999', 'MSC'),
