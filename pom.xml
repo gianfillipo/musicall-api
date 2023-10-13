@@ -182,28 +182,7 @@
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
-                            <outputDirectory>${project.build.directory}/newrelic/newrelic.yml</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version> <!-- Verifique a versão mais recente -->
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>src\main\kotlin\com\example\authenticationservice/AuthenticationServiceApplication.kt</mainClass> <!-- Substitua pelo caminho da sua classe principal -->
-                                </transformer>
-                            </transformers>
-                            <finalName>musicall-api</finalName> <!-- Substitua "seu-app" pelo nome desejado para o JAR -->
+                            <outputDirectory>${project.build.directory}/newrelic</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
