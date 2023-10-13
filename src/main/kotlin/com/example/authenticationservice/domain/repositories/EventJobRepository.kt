@@ -21,6 +21,6 @@ interface EventJobRepository : EventRepositoryCustom, JpaRepository<EventJob, Lo
     fun existsByEventDateAndMusicianId(eventDate: LocalDate, musicianId: Long): Boolean
     @Modifying
     fun deleteByEventId(eventId: Long)
-    @Query("SELECT new com.example.authenticationservice.application.web.dto.response.InstrumentIdAndEventCepDto(instrument.id, e.event.cep) FROM EventJob e WHERE e.id = :eventJobId AND e.event.user.id = :userId")
-    fun findInstrumentIdAndEventCepByIdAndUserId(eventJobId: Long, userId: Long): InstrumentIdAndEventCepDto?
+    @Query("SELECT new com.example.authenticationservice.application.web.dto.response.InstrumentIdAndEventCepDto(instrument.id, ej.event.cep) FROM EventJob ej WHERE ej.event.id = :eventId AND ej.event.user.id = :userId")
+    fun findInstrumentIdAndEventCepByIdAndUserId(eventId: Long, userId: Long): List<InstrumentIdAndEventCepDto>?
 }

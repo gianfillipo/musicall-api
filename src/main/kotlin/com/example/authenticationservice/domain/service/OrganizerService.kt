@@ -4,11 +4,11 @@ import com.example.authenticationservice.domain.entities.*
 import com.example.authenticationservice.domain.entities.JobRequest
 import com.example.authenticationservice.domain.repositories.*
 import com.example.authenticationservice.application.web.dto.response.*
-import com.example.authenticationservice.application.web.dto.request.*
 import com.example.authenticationservice.application.config.security.JwtTokenProvider
 import com.example.authenticationservice.application.web.utils.GoogleMapsUtils
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -167,39 +167,53 @@ class OrganizerService (
             )
         )
     }
-    fun findMusicianByEventLocation(req: HttpServletRequest, eventJobId: Long, filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest, pageable: Pageable): PageImpl<MusicianEventJobDto> {
+    fun findMusicianByEventLocation(req: HttpServletRequest, eventId: Long, filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest, pageable: Pageable): PageImpl<MusicianEventJobDto> {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
         val userId = jwtTokenProvider.getId(token).toLong()
-        val instrumentIdAndEventCepDto = eventJobRepository.findInstrumentIdAndEventCepByIdAndUserId(eventJobId, userId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Você não pode buscar um músico para este evento")
-        val musiciansEventJobDto = musicianService.findMusicianEventJobDtoByInstrumentId(instrumentIdAndEventCepDto.instrumentId, filterMusicianRequest, pageable)
-        var destinations: String = ""
+        val instrumentIdAndEventCepDto = eventJobRepository.findInstrumentIdAndEventCepByIdAndUserId(eventId, userId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Você não pode buscar um músico para este evento")
 
-        if(musiciansEventJobDto.isEmpty()) throw ResponseStatusException(HttpStatus.NO_CONTENT, "Nenhum músico foi encontrado")
+        if (instrumentIdAndEventCepDto.size > 0) {
+            filterMusicianRequest.cep = instrumentIdAndEventCepDto[0].cep
+            if (filterMusicianRequest.instrumentsId == null) {
+                filterMusicianRequest.instrumentsId = instrumentIdAndEventCepDto.map { it.instrumentId }
+            }
 
-        musiciansEventJobDto.forEach { destinations+= it.cep + "|" }
-        destinations = destinations.dropLast(1)
+            val musiciansEventJobDto = musicianService.findMusicianEventJobDtoByInstrumentId(filterMusicianRequest, pageable)
+            var destinations: String = ""
 
-        val response = googleMapsService.getDistanceMatrix(filterMusicianRequest.cep ?: instrumentIdAndEventCepDto.cep, destinations)
-        val mapper = ObjectMapper()
-        val data = mapper.readValue(response, Map::class.java)
+            if(musiciansEventJobDto.isEmpty()) throw ResponseStatusException(HttpStatus.NO_CONTENT, "Nenhum músico foi encontrado")
 
-        val rows = data["rows"] as List<*>
+            musiciansEventJobDto.forEach { destinations+= it.cep + "|" }
+            destinations = destinations.dropLast(1)
 
-        musiciansEventJobDto.content.forEach {
-            for ((rowIndex, row) in rows.withIndex()) {
-                if (row is Map<*, *>) {
-                    val elements = row["elements"] as List<*>
-                    for ((elementIndex, element) in elements.withIndex()) {
-                        if (element is Map<*, *> && element["status"] as? String == "OK") {
-                            val distance = (element["distance"] as Map<String, Any>)["value"] as Int
-                            it.distance = distance
+            val response = googleMapsService.getDistanceMatrix(filterMusicianRequest.cep ?: instrumentIdAndEventCepDto[0].cep, destinations)
+
+            val mapper = ObjectMapper()
+            val data = mapper.readValue(response, Map::class.java)
+
+            val rows = data["rows"] as List<*>
+
+            musiciansEventJobDto.content.forEach {
+                for ((rowIndex, row) in rows.withIndex()) {
+                    if (row is Map<*, *>) {
+                        val elements = row["elements"] as List<*>
+                        for ((elementIndex, element) in elements.withIndex()) {
+                            if (element is Map<*, *> && element["status"] as? String == "OK") {
+                                val distance = (element["distance"] as Map<String, Any>)["value"] as Int
+                                it.distance = distance
+                            }
                         }
                     }
                 }
             }
+
+           return musiciansEventJobDto
+        }
+        else {
+            throw ResponseStatusException(HttpStatus.NO_CONTENT, "Could not find musicians for this event")
         }
 
-       return musiciansEventJobDto
+        return PageImpl(emptyList())
     }
 
     fun findEventsByOrganizer(req: HttpServletRequest): List<com.example.authenticationservice.application.web.dto.response.CalendarEventDto> {

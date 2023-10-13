@@ -17,7 +17,7 @@ import javax.persistence.EntityManager
 class MusicianRepositoryImpl (
     private val em: EntityManager
 ): MusicianRepositoryCustom {
-    override fun findMusicianByIdAndEventLocation(instrumentId: Long, filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest, page: Pageable): PageImpl<MusicianEventJobDto> {
+    override fun findMusicianByIdAndEventLocation(filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest, page: Pageable): PageImpl<MusicianEventJobDto> {
         val cb = em.criteriaBuilder
         val cq = cb.createQuery(MusicianEventJobDto::class.java)
         val root = cq.from(Musician::class.java)
@@ -43,8 +43,6 @@ class MusicianRepositoryImpl (
         if (filterMusicianRequest.instrumentsId != null) {
             predicates.add(joinMusicianInstrument.get<Long>("instrument").`in`(filterMusicianRequest.instrumentsId))
         }
-
-        predicates.add(cb.equal(joinMusicianInstrument.get<Instrument>("instrument").get<Long>("id"), instrumentId))
 
         cq.where(*predicates.toTypedArray())
 

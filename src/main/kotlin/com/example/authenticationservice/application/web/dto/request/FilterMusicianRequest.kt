@@ -6,7 +6,7 @@ import java.time.LocalDate
 import javax.validation.constraints.Future
 
 data class FilterMusicianRequest (
-    @JsonProperty("date") @field:DateTimeFormat(pattern = "yyyy/MM/dd") @field:Future(message = "Event date must be in the future") val date: LocalDate?,
-    @JsonProperty("cep") val cep: String?,
-    @JsonProperty("instrumentsId") val instrumentsId: List<Long>?
+    @JsonProperty("date") @field:DateTimeFormat(pattern = "yyyy/MM/dd") @field:Future(message = "Event date must be in the future") var date: LocalDate?,
+    @JsonProperty("cep") var cep: String?,
+    @JsonProperty("instrumentsId") var instrumentsId: List<Long>?
 )

@@ -6,6 +6,6 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 
 interface MusicianRepositoryCustom {
-    fun findMusicianByIdAndEventLocation(instrumentId: Long, filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest, pageable: Pageable): PageImpl<MusicianEventJobDto>
+    fun findMusicianByIdAndEventLocation(filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest, pageable: Pageable): PageImpl<MusicianEventJobDto>
 
 }

@@ -76,15 +76,15 @@ class OrganizerController (
         return ResponseEntity.status(200).build()
     }
 
-    @PostMapping("/musician/event-job/{eventJobId}")
+    @PostMapping("/musician/event/{eventId}")
     fun findMusicianByEventLocation(
         req: HttpServletRequest,
         @Valid @RequestBody filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest,
-        @PathVariable("eventJobId") @Valid @NotNull eventJobId: Long,
+        @PathVariable("eventId") @Valid @NotNull eventId: Long,
         @RequestParam("page", defaultValue = "0") page: Int,
         @RequestParam("size", defaultValue = "10") size: Int
     ) : ResponseEntity<PageImpl<MusicianEventJobDto>> {
-        val events = organizerService.findMusicianByEventLocation(req, eventJobId, filterMusicianRequest, PageRequest.of(page, size))
+        val events = organizerService.findMusicianByEventLocation(req, eventId, filterMusicianRequest, PageRequest.of(page, size))
 
         return ResponseEntity.status(200).body(events)
     }

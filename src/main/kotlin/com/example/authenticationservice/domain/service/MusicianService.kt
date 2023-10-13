@@ -172,8 +172,8 @@ class MusicianService (
         jobRequestRepository.deleteById(deleteJobRequestDto.id)
     }
 
-    fun findMusicianEventJobDtoByInstrumentId(instrumentId: Long, filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest, pageable: Pageable): PageImpl<MusicianEventJobDto> {
-        val musicians = musicianRepository.findMusicianByIdAndEventLocation(instrumentId, filterMusicianRequest, pageable)
+    fun findMusicianEventJobDtoByInstrumentId(filterMusicianRequest: com.example.authenticationservice.application.web.dto.request.FilterMusicianRequest, pageable: Pageable): PageImpl<MusicianEventJobDto> {
+        val musicians = musicianRepository.findMusicianByIdAndEventLocation(filterMusicianRequest, pageable)
 
         return musicians
     }
