@@ -29,8 +29,7 @@ VALUES ('2000-01-01', 'c111cf08-a6e8-4611-b624-e1d4c4a45978', '12345678901', 'jo
 
 
 INSERT INTO musician (user_id, cep, description, image_url)
-VALUES (2, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/977971/pexels-photo-977971.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-       (3, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/210922/pexels-photo-210922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+VALUES (3, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/210922/pexels-photo-210922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
        (4, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/3771793/pexels-photo-3771793.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
        (5, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/2531728/pexels-photo-2531728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
        (6, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/243989/pexels-photo-243989.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
@@ -96,8 +95,8 @@ INSERT INTO musician_instrument (musician_id, instrument_id) VALUES
 (3, 2),
 (4, 2),
 (5, 2),
-(6, 2),
-(7, 2);
+(6, 2);
+
 
 INSERT INTO job_request (event_job_id, musician_id, organizer_confirmed, musician_confirmed) VALUES
 (1, 1, 0, 1),
