@@ -39,7 +39,7 @@ VALUES (3, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/2
 INSERT INTO event (user_id, name, about_event, cep, number, complement, event_date, duration_hours, start_hour, finalized, image_url)
 VALUES
   (1, 'My Event - AL', 'sei lá', '01406000', 2, 'My Complement', '2024-01-02', 2, '00:00:00', false, 'https://images.pexels.com/photos/2592179/pexels-photo-2592179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-  (1, 'My Event - AL', 'sei lá', '01406000', 2, 'My Complement', '2024-01-02', 2, '00:00:00', false, 'https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1600'),
+  (1, 'My Event - SP', 'sei lá', '01406000', 2, 'My Complement', '2024-01-02', 2, '00:00:00', false, 'https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'My Event - AM', 'sei lá', '01406000', 2, 'My Complement', '2024-01-04', 2, '00:00:00', false, 'https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'My Event - CE', 'sei lá', '01406000', 2, 'My Complement', '2024-01-06', 2, '00:00:00', false, 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'My Event - GO', 'sei lá', '01406000', 2, 'My Complement', '2023-12-09', 2, '00:00:00', false, 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1600'),
@@ -51,7 +51,7 @@ VALUES
   (1, 'My Event - PI', 'sei lá', '01406000', 2, 'My Complement', '2023-12-18', 2, '00:00:00', false, 'https://images.pexels.com/photos/265947/pexels-photo-265947.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'My Event - RN', 'sei lá', '01406000', 2, 'My Complement', '2023-12-20', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'My Event - RS', 'sei lá', '01406000', 2, 'My Complement', '2023-12-21', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
-  (1, 'My Event - RS', 'sei lá', '01406000', 2, 'My Complement', '2023-12-21', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
+  (1, 'My Event - PA', 'sei lá', '01406000', 2, 'My Complement', '2023-12-21', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'Igreja da Sé', 'sei lá', '01406000', 2, 'My Complement', '2023-09-15', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'Cristo Redentor', 'sei lá', '01406000', 2, 'My Complement', '2023-09-16', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'SPTECH Music Talent', 'sei lá', '01406000', 2, 'My Complement', '2023-09-19', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600');

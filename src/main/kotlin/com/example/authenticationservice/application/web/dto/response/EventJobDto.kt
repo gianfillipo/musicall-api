@@ -8,7 +8,7 @@ data class EventJobDto (
     val instrumentId : Long,
     val instrumentName: String,
     val payment : Double?,
-    val isAvailable: Boolean?,
+    val isAvailable: Boolean?
 ) {
     constructor(eventJob: EventJob): this(
             id = eventJob.id,
