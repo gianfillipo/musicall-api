@@ -29,12 +29,12 @@ VALUES ('2000-01-01', 'c111cf08-a6e8-4611-b624-e1d4c4a45978', '12345678901', 'jo
 
 
 INSERT INTO musician (user_id, cep, description, image_url)
-VALUES (3, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/210922/pexels-photo-210922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-       (4, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/3771793/pexels-photo-3771793.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-       (5, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/2531728/pexels-photo-2531728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-       (6, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/243989/pexels-photo-243989.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-       (7, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/1885213/pexels-photo-1885213.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-       (8, '03366010', 'Tá ligado né pai', 'https://images.pexels.com/photos/325688/pexels-photo-325688.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+VALUES (3, '41336610', 'Tá ligado né pai', 'https://images.pexels.com/photos/210922/pexels-photo-210922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+       (4, '57045752', 'Tá ligado né pai', 'https://images.pexels.com/photos/3771793/pexels-photo-3771793.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+       (5, '38067360', 'Tá ligado né pai', 'https://images.pexels.com/photos/2531728/pexels-photo-2531728.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+       (6, '64600100', 'Tá ligado né pai', 'https://images.pexels.com/photos/243989/pexels-photo-243989.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+       (7, '59082100', 'Tá ligado né pai', 'https://images.pexels.com/photos/1885213/pexels-photo-1885213.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+       (8, '59124380', 'Tá ligado né pai', 'https://images.pexels.com/photos/325688/pexels-photo-325688.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
 
 INSERT INTO event (user_id, name, about_event, cep, number, complement, event_date, duration_hours, start_hour, finalized, image_url)
 VALUES
