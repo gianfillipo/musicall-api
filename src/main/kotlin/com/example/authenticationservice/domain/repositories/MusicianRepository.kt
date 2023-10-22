@@ -1,6 +1,7 @@
 package com.example.authenticationservice.domain.repositories
 
 import com.example.authenticationservice.application.web.dto.response.EventDto
+import com.example.authenticationservice.application.web.dto.response.MusicianInfoResponse
 import com.example.authenticationservice.domain.entities.Musician
 import com.example.authenticationservice.domain.entities.User
 import org.springframework.data.jpa.repository.JpaRepository
@@ -28,4 +29,19 @@ interface MusicianRepository : MusicianRepositoryCustom, JpaRepository<Musician,
     @Query("SELECT COUNT(m.cep) FROM Musician m WHERE m.user.id = :userId")
     fun validationMusician(userId: Long): String
 
+
+    @Query("""
+        SELECT new com.example.authenticationservice.application.web.dto.response.MusicianInfoResponse(
+            m.id,
+            u.name,
+            m.description,
+            m.cep,
+            m.imageUrl
+        )
+        FROM Musician m 
+        JOIN m.user u
+        WHERE m.id = :musicianId
+    """)
+//    m.musicianInstruments
+    fun findMusicianInfoById(musicianId: Long): MusicianInfoResponse?
 }

@@ -1,16 +1,8 @@
 package com.example.authenticationservice.domain.service
 
-import com.example.authenticationservice.domain.repositories.JobRequestRepository
-import com.example.authenticationservice.domain.repositories.NotificationRepository
-import com.example.authenticationservice.domain.repositories.UserRepository
-import com.example.authenticationservice.application.web.dto.response.InstrumentDto
-import com.example.authenticationservice.application.web.dto.response.JobRequestDto
-import com.example.authenticationservice.application.web.dto.response.NotificationTypeDto
-import com.example.authenticationservice.application.web.dto.response.TypeUserDto
-import com.example.authenticationservice.application.web.dto.request.DeleteUserRequest
-import com.example.authenticationservice.application.web.dto.request.EmailResetRequest
-import com.example.authenticationservice.application.web.dto.request.SetEmailRequest
 import com.example.authenticationservice.application.config.security.JwtTokenProvider
+import com.example.authenticationservice.application.web.dto.response.*
+import com.example.authenticationservice.domain.repositories.*
 import org.mindrot.jbcrypt.BCrypt
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -25,8 +17,9 @@ class UserService (
     @Autowired private val jwtTokenProvider: JwtTokenProvider,
     @Autowired private val notificationRepository: NotificationRepository,
     @Autowired private val jobRequestRepository: JobRequestRepository,
-    @Autowired private val musicianService: MusicianService,
-    @Autowired private val organizerService: OrganizerService
+    @Autowired private val musicianRepository: MusicianRepository,
+    @Autowired private val organizerService: OrganizerService,
+    @Autowired private val musicianInstrumentRepository: MusicianInstrumentRepository
 ) {
     fun deleteUser(req: HttpServletRequest, deleteUserRequest: com.example.authenticationservice.application.web.dto.request.DeleteUserRequest) {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "User invalid role JWT token.")
@@ -101,5 +94,18 @@ class UserService (
         val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException( HttpStatus.FORBIDDEN, "User invalid role JWT token.")
 
         return userRepository.findAllInstrument()
+    }
+
+    fun getMusicianInfo(req: HttpServletRequest, musicianId: Long): MusicianInfoResponse? {
+        val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(
+            HttpStatus.FORBIDDEN,
+            "User invalid role JWT token."
+        )
+        val musicianInfo = musicianRepository.findMusicianInfoById(musicianId)
+            ?: throw ResponseStatusException(HttpStatus.NO_CONTENT, "Musician id not valid.")
+        val instruments = musicianInstrumentRepository.findNameByMusicianId(musicianId)
+        musicianInfo.instruments = instruments
+
+        return musicianInfo
     }
 }

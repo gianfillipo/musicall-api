@@ -8,6 +8,7 @@ import com.example.authenticationservice.domain.exceptions.ParameterException
 import com.example.authenticationservice.application.web.dto.request.DeleteUserRequest
 import com.example.authenticationservice.application.web.dto.request.EmailResetRequest
 import com.example.authenticationservice.application.web.dto.request.SetEmailRequest
+import com.example.authenticationservice.application.web.dto.response.MusicianInfoResponse
 import com.example.authenticationservice.domain.service.UserService
 import com.sun.istack.NotNull
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -83,6 +84,13 @@ class UserController (
     @GetMapping("/instruments")
     fun getInstruments(req: HttpServletRequest): ResponseEntity<List<InstrumentDto>>{
         val result = userService.getInstruments(req)
+
+        return ResponseEntity.status(200).body(result)
+    }
+
+    @GetMapping("/msc/{musicianId}")
+    fun getMusicianInfo(req: HttpServletRequest, @PathVariable musicianId: Long): ResponseEntity<MusicianInfoResponse>{
+        val result = userService.getMusicianInfo(req, musicianId)
 
         return ResponseEntity.status(200).body(result)
     }
