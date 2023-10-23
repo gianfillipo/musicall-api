@@ -157,13 +157,16 @@ class OrganizerService (
         val user = User()
         user.id = userId
 
-        val jobRequest = JobRequest()
-        jobRequest.id = jobRequestId!!
+        val jobRequest = jobRequestRepository.findById(jobRequestId)
 
+        val musician = musicianRepository.findByUserId(userId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find musician")
+
+
+        eventJobRepository.setMusicianByEventId(musician!!, jobRequest.get().eventJob.id)
         notificationRepository.save(
             Notification(
                 user = user,
-                jobRequest = jobRequest,
+                jobRequest = jobRequest.get(),
                 notificationType = NotificationTypeDto.CONFIRM
             )
         )
