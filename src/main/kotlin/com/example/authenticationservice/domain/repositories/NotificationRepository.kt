@@ -18,7 +18,12 @@ interface NotificationRepository: JpaRepository<Notification, Long> {
                            or 
                            notification.jobRequest.musicianConfirmed = false 
                         )
-                        order by notification.id desc
+                        or ( 
+                            notification.notificationType = 0
+                            and
+                            notification.user.id = :userId
+                        )
+                        order by notification.id asc
     """)
     fun findJobRequestDtoByUserId(userId: Long): List<JobRequestDto>
 
