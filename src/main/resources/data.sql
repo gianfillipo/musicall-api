@@ -63,11 +63,11 @@ VALUES
   (1, 3, 2, 10.0),
   (1, 4, null, 10.0),
   (1, 5, 3, 10.0),
-  (1, 6, NULL, 10.0),
-  (2, 2, NULL, 10.0),
-  (2, 3, NULL, 10.0),
-  (2, 4, NULL, 10.0),
-  (2, 5, NULL, 10.0),
+  (1, 6, 4, 10.0),
+  (2, 2, 1, 10.0),
+  (2, 3, 2, 10.0),
+  (2, 4, 3, 10.0),
+  (2, 5, 4, 10.0),
   (2, 6, NULL, 10.0),
   (3, 2, NULL, 10.0),
   (3, 3, NULL, 10.0),
@@ -105,7 +105,7 @@ INSERT INTO job_request (event_job_id, musician_id, organizer_confirmed, musicia
 (6, 3, 1, 0);
 
 INSERT INTO notification (job_request_id, notification_type, user_id) VALUES
-(1, 0, 1),
+(1, 1, 1),
 (2, 1, 1),
 (3, 1, 1),
 (4, 1, 3);
