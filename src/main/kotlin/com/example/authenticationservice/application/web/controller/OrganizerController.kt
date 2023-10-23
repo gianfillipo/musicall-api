@@ -5,6 +5,7 @@ import com.example.authenticationservice.application.web.dto.response.EventJobDt
 import com.example.authenticationservice.application.web.dto.response.MusicianEventJobDto
 import com.example.authenticationservice.domain.exceptions.ParameterException
 import com.example.authenticationservice.domain.service.OrganizerService
+import com.fasterxml.jackson.databind.JsonSerializer.None
 import com.sun.istack.NotNull
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.beans.factory.annotation.Autowired
@@ -90,8 +91,10 @@ class OrganizerController (
     }
 
     @PostMapping("/job-request")
-    fun createJobRequest(req: HttpServletRequest, @RequestParam eventJobId: Long, @RequestParam musicianId: Long) {
+    fun createJobRequest(req: HttpServletRequest, @RequestParam eventJobId: Long, @RequestParam musicianId: Long) : ResponseEntity<String> {
         organizerService.createJobRequest(req, eventJobId, musicianId)
+
+        return ResponseEntity.status(201).body("Request criado")
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
