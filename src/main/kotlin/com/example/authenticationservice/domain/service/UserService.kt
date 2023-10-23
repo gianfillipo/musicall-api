@@ -19,6 +19,7 @@ class UserService (
     @Autowired private val jobRequestRepository: JobRequestRepository,
     @Autowired private val musicianRepository: MusicianRepository,
     @Autowired private val organizerService: OrganizerService,
+    @Autowired private val musicianService: MusicianService,
     @Autowired private val musicianInstrumentRepository: MusicianInstrumentRepository
 ) {
     fun deleteUser(req: HttpServletRequest, deleteUserRequest: com.example.authenticationservice.application.web.dto.request.DeleteUserRequest) {
@@ -75,12 +76,12 @@ class UserService (
         if (deleteNotificationDto.notificationType == NotificationTypeDto.REQUEST) jobRequestRepository.deleteById(deleteNotificationDto.fkJobRequest)
     }
 
-    fun approveJobRequest(req: HttpServletRequest, jobRequestId: Long?) {
+    fun approveJobRequest(req: HttpServletRequest, jobRequestId: Long) {
         val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException( HttpStatus.FORBIDDEN, "User invalid role JWT token.")
         val id = jwtTokenProvider.getId(token).toLong()
         val typeUser = jwtTokenProvider.getType(token)
         if (typeUser == TypeUserDto.ORG) organizerService.approveJobRequest(id, jobRequestId)
-
+        else musicianService.approveJobRequest(id, jobRequestId)
     }
 
     fun findType(req: HttpServletRequest): TypeUserDto {

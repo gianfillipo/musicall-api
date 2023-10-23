@@ -75,7 +75,7 @@ class UserController (
     }
 
     @PostMapping("/event/job-request/{id}")
-    fun approveJobRequest(req: HttpServletRequest, @PathVariable("id") @Valid @NotNull id: Long?): ResponseEntity<Void> {
+    fun approveJobRequest(req: HttpServletRequest, @PathVariable("id") @Valid @NotNull id: Long): ResponseEntity<Void> {
         userService.approveJobRequest(req, id)
 
         return ResponseEntity.status(200).build()

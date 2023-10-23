@@ -195,8 +195,9 @@ class MusicianService (
     fun findEventsInfoByMusician(req: HttpServletRequest): List<EventsInfoForMusicianResponse> {
         val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
         val id = jwtTokenProvider.getId(token).toLong()
+        val musician = musicianRepository.findByUserId(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não completou cadastro")
 
-        return eventRepository.findEventInfoByMusicianId(id)
+        return eventRepository.findEventInfoByMusicianId(musician!!.id)
     }
 
     fun getEventInfoByEventJobId(eventJobId: Long): EventsInfoResponse? {
@@ -206,5 +207,30 @@ class MusicianService (
         response.eventJob = EventJobDto(vagas.get())
 
         return response
+    }
+
+    @Transactional
+    fun approveJobRequest(id: Long, jobRequestId: Long) {
+        val userId = jobRequestRepository.findOrganizerForNotification(jobRequestId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Vocẽ não pode aprovar esse job")
+        val musician = musicianRepository.findByUserId(id)
+        val eventJobId = jobRequestRepository.findEvenJobIdById(jobRequestId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Vaga não encontrada")
+
+        jobRequestRepository.updateMusicianConfirmedTrueById(jobRequestId, musician!!.id)
+        eventJobRepository.setMusicianByEventId(musician, eventJobId!!)
+
+
+        val user = User()
+        user.id = userId
+
+        val jobRequest = JobRequest()
+        jobRequest.id = jobRequestId!!
+
+        notificationRepository.save(
+            Notification(
+                user = user,
+                jobRequest = jobRequest,
+                notificationType = NotificationTypeDto.CONFIRM
+            )
+        )
     }
 }

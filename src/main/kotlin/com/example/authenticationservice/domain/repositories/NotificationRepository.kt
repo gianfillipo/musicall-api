@@ -13,6 +13,11 @@ interface NotificationRepository: JpaRepository<Notification, Long> {
         select new com.example.authenticationservice.application.web.dto.response.JobRequestDto(notification.id, notification.notificationType, notification.jobRequest)
             from Notification notification
                     where notification.user.id = :userId
+                        and (
+                           notification.jobRequest.organizerConfirmed = false 
+                           or 
+                           notification.jobRequest.musicianConfirmed = false 
+                        )
                         order by notification.id desc
     """)
     fun findJobRequestDtoByUserId(userId: Long): List<JobRequestDto>
@@ -33,4 +38,3 @@ interface NotificationRepository: JpaRepository<Notification, Long> {
     @Modifying
      fun deleteByJobRequestEventJobEventId(eventId: Long)
 }
-//    @Query("delete from Notification notification where notification.jobRequest.eventJob.event.id = :eventId")
