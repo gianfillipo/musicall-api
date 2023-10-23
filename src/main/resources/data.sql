@@ -99,14 +99,16 @@ INSERT INTO musician_instrument (musician_id, instrument_id) VALUES
 
 
 INSERT INTO job_request (event_job_id, musician_id, organizer_confirmed, musician_confirmed) VALUES
-(1, 3, 1, 0),
+(1, 3, 1, 1),
 (2, 1, 0, 1),
+(3, 1, 0, 1),
 (6, 3, 1, 0);
 
 INSERT INTO notification (job_request_id, notification_type, user_id) VALUES
-(1, 1, 1),
+(1, 0, 1),
 (2, 1, 1),
-(3, 1, 3);
+(3, 1, 1),
+(4, 1, 3);
 
 INSERT INTO prospect (email, name, telefone, midia) VALUES
 ('teste@gmail.com', 'Thiago Silva', '11 92599-5591', 'Facebook')
