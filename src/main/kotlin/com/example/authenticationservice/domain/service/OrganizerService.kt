@@ -27,6 +27,7 @@ class OrganizerService (
     @Autowired private val notificationRepository: NotificationRepository,
     @Autowired private val eventJobRepository : EventJobRepository,
     @Autowired private val musicianService: MusicianService,
+    @Autowired private val musicianRepository: MusicianRepository,
     @Autowired private val googleMapsService: GoogleMapsUtils
 ) {
     fun createEvent(createEventRequest: com.example.authenticationservice.application.web.dto.request.CreateEventRequest, req : HttpServletRequest) : com.example.authenticationservice.application.web.dto.response.CreateEventDto {
@@ -234,6 +235,27 @@ class OrganizerService (
         if (events.isEmpty()) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Vocẽ não pode aprovar esse job")
 
         return events
+    }
+
+    fun createJobRequest(req: HttpServletRequest, eventJobId: Long, musicianId: Long) {
+        val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inváido")
+        val id = jwtTokenProvider.getId(token).toLong()
+        val musician = musicianRepository.findById(id)
+        if (musician.isEmpty) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Complete seu cadastro como músico")
+
+        val eventJob = eventJobRepository.getById(eventJobId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Vaga não encontrada")
+        if (eventJob.musician != null) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe alguém ocupando essa vaga")
+
+        val musicianInstrumentHash = musician.get().musicianInstruments.map { it.instrument.id }.toHashSet()
+        if (!musicianInstrumentHash.contains(eventJob.instrument.id)) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Vocẽ não toca esse instrumento")
+
+        val jobRequest = JobRequest(eventJob = eventJob, musician = musician.get(), organizerConfirmed = false)
+
+        if (jobRequestRepository.existsByMusicianIdAndEventId(musician.get().id, eventJob.event.id)) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Você já fez uma solicitação para essa músico")
+        if (eventJobRepository.existsByEventDateAndMusicianId(eventJob.event.eventDate, musician.get().id)) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Esse músico já tem um evento nessa data")
+
+        jobRequestRepository.save(jobRequest)
+        notificationRepository.save(Notification(jobRequest = jobRequest, user = musician.get().user, notificationType = NotificationTypeDto.REQUEST))
     }
 
 }

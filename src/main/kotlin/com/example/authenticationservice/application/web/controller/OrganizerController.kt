@@ -89,6 +89,11 @@ class OrganizerController (
         return ResponseEntity.status(200).body(events)
     }
 
+    @PostMapping("/job-request")
+    fun createJobRequest(req: HttpServletRequest, @RequestParam eventJobId: Long, @RequestParam musicianId: Long) {
+        organizerService.createJobRequest(req, eventJobId, musicianId)
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidationExceptions(ex: MethodArgumentNotValidException): Map<String, String> {
