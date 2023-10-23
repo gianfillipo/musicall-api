@@ -249,7 +249,7 @@ class OrganizerService (
         val musicianInstrumentHash = musician.get().musicianInstruments.map { it.instrument.id }.toHashSet()
         if (!musicianInstrumentHash.contains(eventJob.instrument.id)) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Vocẽ não toca esse instrumento")
 
-        val jobRequest = JobRequest(eventJob = eventJob, musician = musician.get(), organizerConfirmed = false)
+        val jobRequest = JobRequest(eventJob = eventJob, musician = musician.get(), organizerConfirmed = true)
 
         if (jobRequestRepository.existsByMusicianIdAndEventId(musician.get().id, eventJob.event.id)) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Você já fez uma solicitação para essa músico")
         if (eventJobRepository.existsByEventDateAndMusicianId(eventJob.event.eventDate, musician.get().id)) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Esse músico já tem um evento nessa data")
