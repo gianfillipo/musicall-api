@@ -1,14 +1,15 @@
-package com.example.authenticationservice.application.web.dto
+package com.example.authenticationservice.application.web.dto.response
 
 import java.sql.Time
 import java.time.LocalDate
+import java.util.*
 
-class EventsInfoForMusician (
+class EventsInfoForMusicianResponse (
     val idEvento: Long,
     val name: String,
     val data: LocalDate,
-    val starHour: Time,
-    val distance: Float,
+    val hour: Date,
     val vaga: String
 ) {
+    var distance: Float = 0.0f
 }

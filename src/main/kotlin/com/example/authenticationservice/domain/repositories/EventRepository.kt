@@ -1,7 +1,9 @@
 package com.example.authenticationservice.domain.repositories
 
+import com.example.authenticationservice.application.web.dto.response.EventsInfoForMusicianResponse
 import com.example.authenticationservice.application.web.dto.response.CalendarEventByIdDto
 import com.example.authenticationservice.application.web.dto.response.EventDto
+import com.example.authenticationservice.application.web.dto.response.EventsInfoResponse
 import com.example.authenticationservice.domain.entities.Event
 import com.example.authenticationservice.domain.entities.User
 import org.springframework.data.jpa.repository.JpaRepository
@@ -38,4 +40,37 @@ interface EventRepository : EventRepositoryCustom, JpaRepository<Event, Long> {
 
     @Query("SELECT e FROM Event e WHERE e.id = :id")
     fun findEventById(id: Long): EventDto?
+
+    @Query("""
+        select new com.example.authenticationservice.application.web.dto.response.EventsInfoForMusicianResponse(
+            e.id,
+            e.name,
+            e.eventDate,
+            e.startHour,
+            ej.instrument.name
+        )
+            from Event e
+            join e.eventJob ej
+            where ej.musician.id = :musicianId
+            order by e.eventDate asc
+    """)
+    fun findEventInfoByMusicianId(musicianId: Long): List<EventsInfoForMusicianResponse>
+
+    @Query("""
+        select new com.example.authenticationservice.application.web.dto.response.EventsInfoResponse(
+            e.name,
+            e.aboutEvent,
+            e.cep,
+            e.number,
+            e.complement,
+            e.eventDate,
+            e.startHour,
+            e.durationHours,
+            e.imageUrl
+        )
+            from Event e
+            join e.eventJob ej
+            where ej.id = :eventJobId
+    """)
+    fun getEventInfoById(eventJobId: Long): EventsInfoResponse?
 }

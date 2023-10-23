@@ -1,9 +1,9 @@
 package com.example.authenticationservice.application.web.controller
 
+import com.example.authenticationservice.application.web.dto.response.EventsInfoForMusicianResponse
 import com.example.authenticationservice.application.web.dto.response.*
 import com.example.authenticationservice.domain.exceptions.InvalidJwtAuthenticationException
 import com.example.authenticationservice.domain.exceptions.ParameterException
-import com.example.authenticationservice.application.web.dto.request.*
 import com.example.authenticationservice.domain.service.MusicianService
 import com.sun.istack.NotNull
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -83,6 +83,20 @@ class MusicianController (
     @GetMapping("/event/{eventId}")
     fun findEventsByEventId(req: HttpServletRequest, @PathVariable("eventId") @NotNull id: Long) : ResponseEntity<EventDto> {
         val result = musicianService.getEventsById(req, id)
+
+        return ResponseEntity.status(200).body(result)
+    }
+
+    @GetMapping("/my-events")
+    fun findEventsInfoByMusician(req: HttpServletRequest) : ResponseEntity<List<EventsInfoForMusicianResponse>> {
+        val result = musicianService.findEventsInfoByMusician(req)
+
+        return ResponseEntity.status(200).body(result)
+    }
+
+    @GetMapping("/info-event/{eventJobId}")
+    fun getEventInfoByEventJobId(@PathVariable eventJobId: Long) : ResponseEntity<EventsInfoResponse> {
+        val result = musicianService.getEventInfoByEventJobId(eventJobId)
 
         return ResponseEntity.status(200).body(result)
     }

@@ -14,8 +14,6 @@ interface EventJobRepository : EventRepositoryCustom, JpaRepository<EventJob, Lo
     @Query("SELECT count(e) > 0 FROM EventJob e WHERE e.id = :eventJobId AND e.event.user.id = :userId AND e.event.finalized = false")
     fun existsByIdAndEventUserIdAndEventFinalizedFalse(@Param("eventJobId") id: Long, @Param("userId") userId: Long): Boolean
     abstract fun existsByIdAndEvent(id: Long, event: Event): Boolean
-    @Query("SELECT ej.event FROM EventJob ej WHERE ej.id = :fkEventJob")
-    fun findEventById(@Param("fkEventJob") fkEventJob: Long): Event?
     fun getById(fkEventJob: Long): EventJob?
     @Query("SELECT COUNT(e) > 0 FROM EventJob e WHERE e.event.eventDate = :eventDate AND e.musician.id = :musicianId")
     fun existsByEventDateAndMusicianId(eventDate: LocalDate, musicianId: Long): Boolean

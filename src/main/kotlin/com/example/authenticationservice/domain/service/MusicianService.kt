@@ -6,6 +6,7 @@ import com.example.authenticationservice.domain.entities.JobRequest
 import com.example.authenticationservice.domain.repositories.*
 import com.example.authenticationservice.application.web.dto.response.*
 import com.example.authenticationservice.application.config.security.JwtTokenProvider
+import com.example.authenticationservice.application.web.dto.response.EventsInfoForMusicianResponse
 import com.example.authenticationservice.application.web.dto.mapper.MusicianMapper
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -189,5 +190,21 @@ class MusicianService (
         jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
 
         return eventRepository.findEventById(eventId)
+    }
+
+    fun findEventsInfoByMusician(req: HttpServletRequest): List<EventsInfoForMusicianResponse> {
+        val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
+        val id = jwtTokenProvider.getId(token).toLong()
+
+        return eventRepository.findEventInfoByMusicianId(id)
+    }
+
+    fun getEventInfoByEventJobId(eventJobId: Long): EventsInfoResponse? {
+        val response = eventRepository.getEventInfoById(eventJobId)?: throw ResponseStatusException(HttpStatus.NO_CONTENT, "Id do evento é inválido")
+        val vagas = eventJobRepository.findById(eventJobId)
+
+        response.eventJob = EventJobDto(vagas.get())
+
+        return response
     }
 }
