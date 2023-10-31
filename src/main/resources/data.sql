@@ -38,7 +38,7 @@ VALUES (3, '41336610', 'Tá ligado né pai', 'https://images.pexels.com/photos/2
 
 INSERT INTO event (user_id, name, about_event, cep, number, complement, event_date, duration_hours, start_hour, finalized, image_url)
 VALUES
-  (1, 'My Event - AL', 'sei lá', '01406000', 2, 'My Complement', '2024-01-02', 2, '00:00:00', false, 'https://images.pexels.com/photos/2592179/pexels-photo-2592179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+  (1, 'My Event - AL', 'sei lá', '01406000', 2, 'My Complement', '2024-01-02', 2, '00:00:00', true, 'https://images.pexels.com/photos/2592179/pexels-photo-2592179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
   (1, 'My Event - SP', 'sei lá', '01406000', 2, 'My Complement', '2024-11-02', 2, '00:00:00', true, 'https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'My Event - AM', 'sei lá', '01406000', 2, 'My Complement', '2024-01-04', 2, '00:00:00', false, 'https://images.pexels.com/photos/587741/pexels-photo-587741.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'My Event - CE', 'sei lá', '01406000', 2, 'My Complement', '2024-01-06', 2, '00:00:00', false, 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1600'),
@@ -59,9 +59,9 @@ VALUES
 
 INSERT INTO event_job (event_id, instrument_id, musician_id, payment)
 VALUES
-  (1, 2, 1, 10.0),
-  (1, 3, 2, 10.0),
-  (1, 4, null, 10.0),
+  (2, 2, 1, 10.0),
+  (1, 3, 1, 10.0),
+  (3, 4, 1, 10.0),
   (1, 5, 3, 10.0),
   (1, 6, 4, 10.0),
   (2, 2, 1, 10.0),
@@ -100,9 +100,10 @@ INSERT INTO musician_instrument (musician_id, instrument_id) VALUES
 
 INSERT INTO job_request (event_job_id, musician_id, organizer_confirmed, musician_confirmed) VALUES
 (1, 3, 1, 1),
-(2, 1, 0, 1),
-(3, 1, 0, 1),
+(3, 1, 1, 1),
+(2, 1, 1, 1),
 (6, 3, 1, 0);
+
 
 INSERT INTO notification (job_request_id, notification_type, user_id) VALUES
 (1, 1, 1),
