@@ -11,6 +11,7 @@ import com.example.authenticationservice.application.web.dto.mapper.MusicianMapp
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -232,5 +233,40 @@ class MusicianService (
                 notificationType = NotificationTypeDto.CONFIRM
             )
         )
+    }
+
+    fun getJobRequestByMusicianId(musicianId: Long, req: HttpServletRequest): InvitesKpiMusicianResponse? {
+        val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
+        val id = jwtTokenProvider.getId(token).toLong()
+        val musician = musicianRepository.findByUserId(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não completou cadastro")
+
+        return musicianRepository.getJobRequestByMusicianId(musicianId)
+    }
+
+    fun getAllMatchesByMusiciaId(musicianId: Long, req: HttpServletRequest): TotalMatchsKpiMusician? {
+        val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
+        val id = jwtTokenProvider.getId(token).toLong()
+        val musician = musicianRepository.findByUserId(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não completou cadastro")
+
+        return musicianRepository.getAllMatchesByMusiciaId(musicianId)
+    }
+
+    fun getAllInstrumentsByVacancies(req: HttpServletRequest): List<EventJobPerInstrumentResponse>? {
+        val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
+        val id = jwtTokenProvider.getId(token).toLong()
+        val musician = musicianRepository.findByUserId(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não completou cadastro")
+
+        val topInstruments = musicianRepository.findTop5InstrumentsByVacancies()
+
+        return if (topInstruments.size > 5) topInstruments.subList(0, 5) else topInstruments
+
+    }
+
+    fun getAllInvitesByInstruments(musicianId: Long, req: HttpServletRequest): List<InvitePerInstrumentResponse>? {
+        val token = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
+        val id = jwtTokenProvider.getId(token).toLong()
+        val musician = musicianRepository.findByUserId(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não completou cadastro")
+
+        return musicianRepository.getAllInvitesByInstruments(musicianId)
     }
 }

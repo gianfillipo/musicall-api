@@ -1,5 +1,6 @@
 package com.example.authenticationservice.domain.service
 
+import ViaCepUtils
 import com.example.authenticationservice.domain.entities.*
 import com.example.authenticationservice.domain.entities.JobRequest
 import com.example.authenticationservice.domain.repositories.*
@@ -37,6 +38,12 @@ class OrganizerService (
         if (eventRepository.existsByEventDateAndFinalized(createEventRequest.eventDate!!, false)) throw ResponseStatusException(HttpStatus.CONFLICT, "Você já tem um evento nessa data")
 
         val event = Event(createEventRequest, user)
+
+        // Parte do BI para os eventos
+        val viaCep = ViaCepUtils()
+        val ufAndState = viaCep.obterUFeEstadoPorCEP(createEventRequest.cep)
+        val estado = ufAndState?.get("Estado")
+        val regiao = ufAndState?.get("Região")
 
         eventRepository.save(event)
 

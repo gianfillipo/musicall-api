@@ -101,6 +101,34 @@ class MusicianController (
         return ResponseEntity.status(200).body(result)
     }
 
+    @GetMapping("/dashboard/invite-kpi/{musicianId}")
+    fun getJobRequestByMusicianId(@PathVariable musicianId: Long, req: HttpServletRequest): ResponseEntity<InvitesKpiMusicianResponse> {
+        val result = musicianService.getJobRequestByMusicianId(musicianId, req)
+
+        return ResponseEntity.status(200).body(result)
+    }
+
+    @GetMapping("/dashboard/matchs-kpi/{musicianId}")
+    fun getAllMatchesByMusiciaId(@PathVariable musicianId: Long, req: HttpServletRequest): ResponseEntity<TotalMatchsKpiMusician> {
+        val result = musicianService.getAllMatchesByMusiciaId(musicianId, req)
+
+        return ResponseEntity.status(200).body(result)
+    }
+
+    @GetMapping("/dashboard/quantity-per-instrument")
+    fun getAllInstrumentsByVacancies(req: HttpServletRequest): ResponseEntity<List<EventJobPerInstrumentResponse>> {
+        val result = musicianService.getAllInstrumentsByVacancies(req)
+
+        return ResponseEntity.status(200).body(result)
+    }
+
+    @GetMapping("/dashboard/quantity-invites/{musicianId}")
+    fun getAllInvitesByInstruments(@PathVariable musicianId: Long, req: HttpServletRequest): ResponseEntity<List<InvitePerInstrumentResponse>> {
+        val result = musicianService.getAllInvitesByInstruments(musicianId, req)
+
+        return ResponseEntity.status(200).body(result)
+    }
+
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(InvalidJwtAuthenticationException::class)
     fun handleValidationExceptions(ex: InvalidJwtAuthenticationException): Map<String, String> {

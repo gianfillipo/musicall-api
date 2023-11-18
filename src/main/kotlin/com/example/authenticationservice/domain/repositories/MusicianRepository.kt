@@ -1,11 +1,11 @@
 package com.example.authenticationservice.domain.repositories
 
-import com.example.authenticationservice.application.web.dto.response.EventDto
-import com.example.authenticationservice.application.web.dto.response.MusicianInfoResponse
+import com.example.authenticationservice.application.web.dto.response.*
 import com.example.authenticationservice.domain.entities.Musician
 import com.example.authenticationservice.domain.entities.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import javax.persistence.QueryHint
 
 
 interface MusicianRepository : MusicianRepositoryCustom, JpaRepository<Musician, Long> {
@@ -44,4 +44,76 @@ interface MusicianRepository : MusicianRepositoryCustom, JpaRepository<Musician,
     """)
 //    m.musicianInstruments
     fun findMusicianInfoById(musicianId: Long): MusicianInfoResponse?
+
+    @Query("""
+    SELECT
+        NEW com.example.authenticationservice.application.web.dto.response.InvitesKpiMusicianResponse(
+            jr.musician.id,
+            COUNT(*)
+        )
+    FROM
+        JobRequest jr
+    WHERE
+        jr.musician.id = :musicianId
+    GROUP BY
+        jr.musician.id
+""")
+    fun getJobRequestByMusicianId(musicianId: Long): InvitesKpiMusicianResponse
+
+    @Query("""
+    SELECT
+        NEW com.example.authenticationservice.application.web.dto.response.TotalMatchsKpiMusician(
+            jr.musician.id,
+            COUNT(*)
+        )
+    FROM
+        JobRequest jr
+    WHERE
+        jr.musician.id = :musicianId
+        AND jr.organizerConfirmed = 1
+        AND jr.musicianConfirmed = 1
+    GROUP BY
+        jr.musician.id
+    """)
+    fun getAllMatchesByMusiciaId(musicianId: Long): TotalMatchsKpiMusician
+
+    @Query("""
+    SELECT
+        NEW com.example.authenticationservice.application.web.dto.response.EventJobPerInstrumentResponse(
+            i.name,
+            COUNT(*)
+        )
+    FROM
+        EventJob ej
+    JOIN
+        ej.instrument i
+    GROUP BY
+        i.name
+    ORDER BY
+        COUNT(*) DESC
+    """)
+    fun findTop5InstrumentsByVacancies(): List<EventJobPerInstrumentResponse>
+
+    @Query("""
+    SELECT
+        NEW com.example.authenticationservice.application.web.dto.response.InvitePerInstrumentResponse(
+            i.name,
+            i.id,
+            COUNT(i.id) AS inviteCount
+        )
+    FROM
+        Notification n
+    JOIN
+        n.jobRequest jr
+    JOIN
+        jr.eventJob ej
+    JOIN
+        ej.instrument i
+    WHERE
+        n.notificationType = 1
+        AND jr.musician.id = :musicianId
+    GROUP BY
+        i.id, i.name
+    """)
+    fun getAllInvitesByInstruments(musicianId: Long): List<InvitePerInstrumentResponse>
 }
