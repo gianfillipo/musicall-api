@@ -1,5 +1,6 @@
 package com.example.authenticationservice.domain.service
 
+import EventBi
 import ViaCepUtils
 import com.example.authenticationservice.domain.entities.*
 import com.example.authenticationservice.domain.entities.JobRequest
@@ -9,13 +10,16 @@ import com.example.authenticationservice.application.config.security.JwtTokenPro
 import com.example.authenticationservice.application.web.utils.GoogleMapsUtils
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 
 @Service
@@ -29,7 +33,8 @@ class OrganizerService (
     @Autowired private val eventJobRepository : EventJobRepository,
     @Autowired private val musicianService: MusicianService,
     @Autowired private val musicianRepository: MusicianRepository,
-    @Autowired private val googleMapsService: GoogleMapsUtils
+    @Autowired private val googleMapsService: GoogleMapsUtils,
+    @Autowired private val eventBiRepository: EventBiRepository
 ) {
     fun createEvent(createEventRequest: com.example.authenticationservice.application.web.dto.request.CreateEventRequest, req : HttpServletRequest) : com.example.authenticationservice.application.web.dto.response.CreateEventDto {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
@@ -43,8 +48,13 @@ class OrganizerService (
         val viaCep = ViaCepUtils()
         val ufAndState = viaCep.obterUFeEstadoPorCEP(createEventRequest.cep)
         val estado = ufAndState?.get("Estado")
-        val regiao = ufAndState?.get("Região")
+        val regiao = ufAndState?.get("Regiao")
 
+        val date = LocalDate.parse(createEventRequest.eventDate.toString(), DateTimeFormatter.ISO_DATE)
+        val dayOfWeek = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale("pt", "BR"))
+        val eventBi = EventBi(name = createEventRequest.name, dayOfWeek = dayOfWeek, region = regiao, state = estado)
+
+        eventBiRepository.save(eventBi)
         eventRepository.save(event)
 
         return com.example.authenticationservice.application.web.dto.response.CreateEventDto(event)
@@ -267,5 +277,4 @@ class OrganizerService (
         jobRequestRepository.save(jobRequest)
         notificationRepository.save(Notification(jobRequest = jobRequest, user = musician.get().user, notificationType = NotificationTypeDto.REQUEST))
     }
-
 }
