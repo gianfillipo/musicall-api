@@ -1,5 +1,6 @@
 package com.example.authenticationservice.domain.service
 
+import ViaCepUtils
 import com.example.authenticationservice.application.web.utils.GoogleMapsUtils
 import com.example.authenticationservice.domain.entities.*
 import com.example.authenticationservice.domain.entities.JobRequest
@@ -32,7 +33,8 @@ class MusicianService (
     @Autowired private val jobRequestRepository: JobRequestRepository,
     @Autowired private val eventRepository: EventRepository,
     @Autowired private val notificationRepository: NotificationRepository,
-    @Autowired private val googleMapsService: GoogleMapsUtils
+    @Autowired private val googleMapsService: GoogleMapsUtils,
+    @Autowired private val musicianBiRepository: MusicianBiRepository
 ) {
     fun registerMusician(registerMusicianRequest: com.example.authenticationservice.application.web.dto.request.RegisterMusicianRequest, req : HttpServletRequest) : MusicianDto {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
@@ -41,6 +43,15 @@ class MusicianService (
         if(musicianRepository.existsByUser(user)) throw ResponseStatusException(HttpStatus.CONFLICT, "Usuário não existe")
 
         val musician = Musician(registerMusicianRequest, user)
+
+        // Parte do BI para de musico
+        val viaCep = ViaCepUtils()
+        val ufAndState = viaCep.obterUFeEstadoPorCEP(registerMusicianRequest.cep)
+        val estado = ufAndState?.get("Estado")
+        val regiao = ufAndState?.get("Regiao")
+        val musicianBi = MusicianBi(region = regiao, state = estado)
+
+        musicianBiRepository.save(musicianBi)
 
         musicianRepository.save(musician)
 

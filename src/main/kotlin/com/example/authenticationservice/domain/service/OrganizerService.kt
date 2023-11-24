@@ -1,6 +1,5 @@
 package com.example.authenticationservice.domain.service
 
-import EventBi
 import ViaCepUtils
 import com.example.authenticationservice.domain.entities.*
 import com.example.authenticationservice.domain.entities.JobRequest
@@ -16,8 +15,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
+import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 import javax.servlet.http.HttpServletRequest
@@ -42,19 +41,20 @@ class OrganizerService (
         val user = userRepository.getById(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado")
         if (eventRepository.existsByEventDateAndFinalized(createEventRequest.eventDate!!, false)) throw ResponseStatusException(HttpStatus.CONFLICT, "Você já tem um evento nessa data")
 
+        // pegando o dia da semana para a tabela do BI
         val event = Event(createEventRequest, user)
+        val date = LocalDate.parse(createEventRequest.eventDate.toString())
+        val dayOfWeek: DayOfWeek = date.dayOfWeek
+        val dayOfWeekConverter = dayOfWeek.getDisplayName(TextStyle.FULL, Locale("pt", "BR"))
 
         // Parte do BI para os eventos
         val viaCep = ViaCepUtils()
         val ufAndState = viaCep.obterUFeEstadoPorCEP(createEventRequest.cep)
         val estado = ufAndState?.get("Estado")
         val regiao = ufAndState?.get("Regiao")
-
-        val date = LocalDate.parse(createEventRequest.eventDate.toString(), DateTimeFormatter.ISO_DATE)
-        val dayOfWeek = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale("pt", "BR"))
-        val eventBi = EventBi(name = createEventRequest.name, dayOfWeek = dayOfWeek, region = regiao, state = estado)
-
+        val eventBi = EventBi(name = createEventRequest.name, region = regiao, state = estado, dayOfWeek = dayOfWeekConverter)
         eventBiRepository.save(eventBi)
+
         eventRepository.save(event)
 
         return com.example.authenticationservice.application.web.dto.response.CreateEventDto(event)
@@ -277,4 +277,5 @@ class OrganizerService (
         jobRequestRepository.save(jobRequest)
         notificationRepository.save(Notification(jobRequest = jobRequest, user = musician.get().user, notificationType = NotificationTypeDto.REQUEST))
     }
+
 }
