@@ -88,25 +88,6 @@ interface EventRepository : EventRepositoryCustom, JpaRepository<Event, Long> {
             "OR (MONTH(event_date) = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH) AND YEAR(event_date) = YEAR(CURRENT_DATE())) AND user_id = :user", nativeQuery = true)
     fun getEventCounts(user: Long): List<Map<String, Any>>
 
-
-    @Query("""
-SELECT COUNT(e)
-FROM com.example.authenticationservice.domain.entities.Event e
-WHERE FUNCTION('MONTH', e.eventDate) = FUNCTION('MONTH', CURRENT_DATE)
-    AND FUNCTION('YEAR', e.eventDate) = FUNCTION('YEAR', CURRENT_DATE)
-    AND e.user.id = :user
-""")
-    fun getCurrentMonthEventCount(user: Long): Long
-
-    @Query("""
-    SELECT COUNT(e)
-    FROM com.example.authenticationservice.domain.entities.Event e
-    WHERE FUNCTION('MONTH', e.eventDate) = FUNCTION('MONTH', CURRENT_DATE - 1)
-    AND FUNCTION('YEAR', e.eventDate) = FUNCTION('YEAR', CURRENT_DATE - 1)
-    AND e.user.id = :user
-""")
-    fun getLastMonthEventCount(user: Long): Long
-
     @Query("""
     SELECT NEW com.example.authenticationservice.application.web.dto.response.HoursPerMonth(
         FUNCTION('MONTH', e.eventDate),
