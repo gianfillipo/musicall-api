@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
+import java.math.BigDecimal
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -287,10 +288,10 @@ class OrganizerService (
     fun getPercentageOfEvents(req: HttpServletRequest, user: Long): PercentageEvent {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
 
-        val counts = eventRepository.getEventCounts(user)
-//        val currentMonth = eventRepository.getCurrentMonthEventCount(user)
-//        val lastMonth = eventRepository.getLastMonthEventCount(user)
-//        val counts = EventCountProjection(currentMonth, lastMonth)
+        val result = eventRepository.getEventCounts(user)
+        val currentMonthCount = (result[0]["currentMonthCount"] as BigDecimal).toLong()
+        val lastMonthCount = (result[0]["lastMonthCount"] as BigDecimal).toLong()
+        val counts = EventCountProjection(currentMonthCount, lastMonthCount)
         return calcularPorcentagemAumentoQueda(counts)
     }
 

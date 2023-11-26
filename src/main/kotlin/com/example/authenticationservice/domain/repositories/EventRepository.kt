@@ -80,21 +80,13 @@ interface EventRepository : EventRepositoryCustom, JpaRepository<Event, Long> {
     """)
     fun getEventsPerCurrentMonth(user: Long): Long
 
-    @Query("""
-    SELECT
-        new com.example.authenticationservice.application.web.dto.response.EventCountProjection(
-        SUM(CASE WHEN MONTH(e.eventDate) = MONTH(CURRENT_DATE) AND YEAR(e.eventDate) = YEAR(CURRENT_DATE) THEN 1 ELSE 0 END) AS currentMonthCount,
-        SUM(CASE WHEN MONTH(e.eventDate) = MONTH(CURRENT_DATE - 1) AND YEAR(e.eventDate) = YEAR(CURRENT_DATE - 1) THEN 1 ELSE 0 END) AS lastMonthCount
-    )
-    FROM
-        Event e
-    WHERE
-        ((MONTH(e.eventDate) = MONTH(CURRENT_DATE) AND YEAR(e.eventDate) = YEAR(CURRENT_DATE))
-        OR
-        (MONTH(e.eventDate) = MONTH(CURRENT_DATE - 1) AND YEAR(e.eventDate) = YEAR(CURRENT_DATE)))
-        AND e.user.id = :user
-    """)
-    fun getEventCounts(user: Long): EventCountProjection
+    @Query(value = "SELECT " +
+            "SUM(MONTH(event_date) = MONTH(CURRENT_DATE()) AND YEAR(event_date) = YEAR(CURRENT_DATE())) AS currentMonthCount, " +
+            "SUM(MONTH(event_date) = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH) AND YEAR(event_date) = YEAR(CURRENT_DATE() - INTERVAL 1 MONTH)) AS lastMonthCount " +
+            "FROM event " +
+            "WHERE (MONTH(event_date) = MONTH(CURRENT_DATE()) AND YEAR(event_date) = YEAR(CURRENT_DATE())) " +
+            "OR (MONTH(event_date) = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH) AND YEAR(event_date) = YEAR(CURRENT_DATE())) AND user_id = :user", nativeQuery = true)
+    fun getEventCounts(user: Long): List<Map<String, Any>>
 
 
     @Query("""
