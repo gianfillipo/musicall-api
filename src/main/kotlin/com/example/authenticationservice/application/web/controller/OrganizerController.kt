@@ -1,11 +1,8 @@
 package com.example.authenticationservice.application.web.controller
 
-import com.example.authenticationservice.application.web.dto.response.CalendarEventByIdDto
-import com.example.authenticationservice.application.web.dto.response.EventJobDto
-import com.example.authenticationservice.application.web.dto.response.MusicianEventJobDto
+import com.example.authenticationservice.application.web.dto.response.*
 import com.example.authenticationservice.domain.exceptions.ParameterException
 import com.example.authenticationservice.domain.service.OrganizerService
-import com.fasterxml.jackson.databind.JsonSerializer.None
 import com.sun.istack.NotNull
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.beans.factory.annotation.Autowired
@@ -95,6 +92,30 @@ class OrganizerController (
         organizerService.createJobRequest(req, eventJobId, musicianId)
 
         return ResponseEntity.status(201).body("Request criado")
+    }
+
+    @GetMapping("/dashboard/events-current-month/{user}")
+    fun getEventsPerCurrentMonth(req : HttpServletRequest, @PathVariable("user") user:Long) : Long {
+
+        return organizerService.getEventsPerCurrentMonth(req, user)
+    }
+
+    @GetMapping("/dashboard/percentage-events/{user}")
+    fun getPercentageOfEvents(req : HttpServletRequest, @PathVariable("user") user:Long) : PercentageEvent {
+
+        return organizerService.getPercentageOfEvents(req, user)
+    }
+
+    @GetMapping("/dashboard/hours-per-month/{user}")
+    fun getEventHoursPerMouth(req : HttpServletRequest, @PathVariable("user") user:Long) : List<HoursPerMonth> {
+
+        return organizerService.getEventHoursPerMouth(req, user)
+    }
+
+    @GetMapping("/dashboard/instrument-musicians")
+    fun getInstrumentsPerMusicians(req : HttpServletRequest) : List<InstrumentsPerMusician> {
+
+        return organizerService.getInstrumentsPerMusicians(req)
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -54,7 +54,11 @@ VALUES
   (1, 'Emo Bar', 'sei lá', '01406000', 2, 'My Complement', '2023-12-21', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'Igreja da Sé', 'sei lá', '01406000', 2, 'My Complement', '2023-09-15', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
   (1, 'Cristo Redentor', 'sei lá', '01406000', 2, 'My Complement', '2023-09-16', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
-  (1, 'SPTECH Music Talent', 'sei lá', '01406000', 2, 'My Complement', '2023-09-19', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600');
+  (1, 'SPTECH Music Talent', 'sei lá', '01406000', 2, 'My Complement', '2023-09-19', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
+  (1, 'Bar do Jaú', 'sei lá', '01406000', 2, 'My Complement', '2023-10-19', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
+  (1, 'Blitz', 'sei lá', '01406000', 2, 'My Complement', '2023-10-21', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
+  (1, 'Bonjour', 'sei lá', '01406000', 2, 'My Complement', '2023-11-21', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600'),
+  (1, 'Baile da rua 2', 'sei lá', '01406000', 2, 'My Complement', '2023-10-10', 2, '00:00:00', false, 'https://images.pexels.com/photos/1652353/pexels-photo-1652353.jpeg?auto=compress&cs=tinysrgb&w=1600');
 
 
 INSERT INTO event_job (event_id, instrument_id, musician_id, payment)

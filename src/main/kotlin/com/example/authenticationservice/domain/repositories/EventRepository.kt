@@ -1,9 +1,6 @@
 package com.example.authenticationservice.domain.repositories
 
-import com.example.authenticationservice.application.web.dto.response.EventsInfoForMusicianResponse
-import com.example.authenticationservice.application.web.dto.response.CalendarEventByIdDto
-import com.example.authenticationservice.application.web.dto.response.EventDto
-import com.example.authenticationservice.application.web.dto.response.EventsInfoResponse
+import com.example.authenticationservice.application.web.dto.response.*
 import com.example.authenticationservice.domain.entities.Event
 import com.example.authenticationservice.domain.entities.User
 import org.springframework.data.jpa.repository.JpaRepository
@@ -74,4 +71,60 @@ interface EventRepository : EventRepositoryCustom, JpaRepository<Event, Long> {
             where ej.id = :eventJobId
     """)
     fun getEventInfoById(eventJobId: Long): EventsInfoResponse?
+
+    @Query("""
+        SELECT COUNT(e) FROM Event e 
+        WHERE FUNCTION('MONTH', e.eventDate) = FUNCTION('MONTH', CURRENT_DATE) 
+        AND FUNCTION('YEAR', e.eventDate) = FUNCTION('YEAR', CURRENT_DATE) 
+        AND e.user.id = :user
+    """)
+    fun getEventsPerCurrentMonth(user: Long): Long
+
+    @Query("""
+    SELECT
+        new com.example.authenticationservice.application.web.dto.response.EventCountProjection(
+        SUM(CASE WHEN MONTH(e.eventDate) = MONTH(CURRENT_DATE) AND YEAR(e.eventDate) = YEAR(CURRENT_DATE) THEN 1 ELSE 0 END) AS currentMonthCount,
+        SUM(CASE WHEN MONTH(e.eventDate) = MONTH(CURRENT_DATE - 1) AND YEAR(e.eventDate) = YEAR(CURRENT_DATE - 1) THEN 1 ELSE 0 END) AS lastMonthCount
+    )
+    FROM
+        Event e
+    WHERE
+        ((MONTH(e.eventDate) = MONTH(CURRENT_DATE) AND YEAR(e.eventDate) = YEAR(CURRENT_DATE))
+        OR
+        (MONTH(e.eventDate) = MONTH(CURRENT_DATE - 1) AND YEAR(e.eventDate) = YEAR(CURRENT_DATE)))
+        AND e.user.id = :user
+    """)
+    fun getEventCounts(user: Long): EventCountProjection
+
+
+    @Query("""
+SELECT COUNT(e)
+FROM com.example.authenticationservice.domain.entities.Event e
+WHERE FUNCTION('MONTH', e.eventDate) = FUNCTION('MONTH', CURRENT_DATE)
+    AND FUNCTION('YEAR', e.eventDate) = FUNCTION('YEAR', CURRENT_DATE)
+    AND e.user.id = :user
+""")
+    fun getCurrentMonthEventCount(user: Long): Long
+
+    @Query("""
+    SELECT COUNT(e)
+    FROM com.example.authenticationservice.domain.entities.Event e
+    WHERE FUNCTION('MONTH', e.eventDate) = FUNCTION('MONTH', CURRENT_DATE - 1)
+    AND FUNCTION('YEAR', e.eventDate) = FUNCTION('YEAR', CURRENT_DATE - 1)
+    AND e.user.id = :user
+""")
+    fun getLastMonthEventCount(user: Long): Long
+
+    @Query("""
+    SELECT NEW com.example.authenticationservice.application.web.dto.response.HoursPerMonth(
+        FUNCTION('MONTH', e.eventDate),
+        SUM(e.durationHours)
+    )
+    FROM com.example.authenticationservice.domain.entities.Event e
+    WHERE e.finalized = true AND e.user.id = :user
+    GROUP BY FUNCTION('MONTH', e.eventDate)
+    """)
+    fun getEventHoursPerMouth(user: Long): List<HoursPerMonth>
+
+
 }

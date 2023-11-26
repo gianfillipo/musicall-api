@@ -33,7 +33,7 @@ class OrganizerService (
     @Autowired private val musicianService: MusicianService,
     @Autowired private val musicianRepository: MusicianRepository,
     @Autowired private val googleMapsService: GoogleMapsUtils,
-    @Autowired private val eventBiRepository: EventBiRepository
+    @Autowired private val eventBiRepository: EventBiRepository,
 ) {
     fun createEvent(createEventRequest: com.example.authenticationservice.application.web.dto.request.CreateEventRequest, req : HttpServletRequest) : com.example.authenticationservice.application.web.dto.response.CreateEventDto {
         val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
@@ -276,6 +276,59 @@ class OrganizerService (
 
         jobRequestRepository.save(jobRequest)
         notificationRepository.save(Notification(jobRequest = jobRequest, user = musician.get().user, notificationType = NotificationTypeDto.REQUEST))
+    }
+
+    fun getEventsPerCurrentMonth(req: HttpServletRequest, user: Long): Long {
+        val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
+
+        return eventRepository.getEventsPerCurrentMonth(user)
+    }
+
+    fun getPercentageOfEvents(req: HttpServletRequest, user: Long): PercentageEvent {
+        val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
+
+        val counts = eventRepository.getEventCounts(user)
+//        val currentMonth = eventRepository.getCurrentMonthEventCount(user)
+//        val lastMonth = eventRepository.getLastMonthEventCount(user)
+//        val counts = EventCountProjection(currentMonth, lastMonth)
+        return calcularPorcentagemAumentoQueda(counts)
+    }
+
+    private fun calcularPorcentagemAumentoQueda(counts: EventCountProjection): PercentageEvent {
+        val currentMonthCount = counts.currentMonthCount
+        val lastMonthCount = counts.lastMonthCount
+
+        val percentualChange = if (lastMonthCount != 0L) {
+            ((currentMonthCount.toDouble() / lastMonthCount.toDouble()) - 1) * 100
+        } else {
+            0.0
+        }
+
+        val tipoMudanca = when {
+            currentMonthCount > lastMonthCount -> "Aumento"
+            currentMonthCount < lastMonthCount -> "Queda"
+            else -> "Sem Mudança"
+        }
+
+        // Substitua a vírgula por ponto no percentual formatado
+        val percentualFormatado = String.format("%.2f", percentualChange).replace(",", ".")
+
+        // Converta para Double
+        val percentualDouble = percentualFormatado.toDouble()
+
+        return PercentageEvent(percentualDouble, tipoMudanca)
+    }
+
+    fun getEventHoursPerMouth(req: HttpServletRequest, user: Long): List<HoursPerMonth> {
+        val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
+
+        return eventRepository.getEventHoursPerMouth(user)
+    }
+
+    fun getInstrumentsPerMusicians(req: HttpServletRequest): List<InstrumentsPerMusician> {
+        val token  = jwtTokenProvider.resolveToken(req) ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Tipo de usuário inválido")
+
+        return instrumentRepository.getInstrumentsPerMusicians()
     }
 
 }
